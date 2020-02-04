@@ -26,12 +26,12 @@ int main()
   string profession;
   string animal;
   string petName;
-  bool playAgain; // Stores condition to repeat game.
+  char playAgain; // Stores condition to repeat game.
   string loopChoice; // Stores choice if user wants to play again.
 
-  playAgain = true;
+	playAgain = YES;
 
-  while (playAgain) {
+  while (playAgain == YES) {
 
   name = "";
   cityName = "";
@@ -88,7 +88,7 @@ int main()
 
   cout << loopChoice << endl;
 
-  playAgain = loopChoice == "y"; 
+  playAgain == "y"; 
   }
   cout << "Goodbye, thank you for playing!";
   cout << endl << endl << endl;
