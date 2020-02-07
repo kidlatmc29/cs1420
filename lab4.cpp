@@ -9,7 +9,7 @@ int main()
 {
   int userInput;
   // 1. x num of x on one line
-  cout << "Please supply an integer: ";
+  cout << " 1.) Please supply an integer: ";
   cin >> userInput;
 
   for (int i = userInput; i > 0; i--){
@@ -19,7 +19,7 @@ int main()
   cout << endl << endl;
 
   // 2. x num of 1s
-  cout << "Please supply another integer: ";
+  cout << " 2.) Please supply another integer: ";
   cin >> userInput;
   for (int j = userInput; j > 0; j--){
     cout << "1" << endl;
@@ -28,7 +28,7 @@ int main()
   cout << endl << endl;
 
   // 3. the multiplcation table to x
-  cout << "Please supply another integer: ";
+  cout << " 3.) Please supply another integer (Between 1 - 9): ";
   cin >> userInput;
 
   for(int g = 1; g <= userInput; g++){
@@ -47,7 +47,7 @@ int main()
   cout << endl << endl;
 
   // 4. num of x triangle
-  cout << "Please supply another integer: ";
+  cout << " 4.) Please supply another integer: ";
   cin >> userInput;
 
   for(int n = 1; n <= userInput; n++) {
@@ -59,7 +59,7 @@ int main()
   cout << endl << endl;
 
   // 5. the outline of a half-diamond, with x at the widest point
-  cout << "Please supply another integer: ";
+  cout << " 5.) Please supply another integer: ";
   cin >> userInput;
   for(int t = 1; t <= userInput; t++) {
     for(int spaces = 1; spaces < t; spaces++) {

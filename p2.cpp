@@ -5,13 +5,13 @@
 // Purpose: This program plays a number guessing game with the user
 // as many times as the user wants.
 //
-// Input: The user will input guesses of numbers with in the range [1, 25].
+// Input: The user will input guesses of numbers with in the range [1, 15].
 //
 // Processing: The program will compare the user's guess to the
 // random generated number and will continue until the user's guess
 // matches the random number.
 //
-// Output: Program will print out the user if their guess is
+// Output: Program will print out messages based on if the user's guess is
 // too high, too low or correct.
 //
 // Example: The random number is 12, and the user guesses 15, the game will
@@ -25,7 +25,7 @@
 
 using namespace std;
 
-const int MAX_VALUE = 25; // Stores upperbounds of the possible random number.
+const int MAX_VALUE = 15; // Stores upperbounds of the possible random number.
 const int MIN_VALUE = 1; // Stores lowerbounds of the possible random number.
 const char YES = 'y';
 
