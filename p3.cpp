@@ -2,10 +2,10 @@
 // p3.cpp
 // 2-16-2020
 
-// Purpose: This program plays the game chutes and ladders with the user.
+// Purpose: This program plays the game Chutes and Ladders with the user.
 
 // Input: The user is prompted to give their name to the program. The user
-// spins to start the game.
+// preseses enter spin and to advance through turns.
 
 // Output: When the user spins to move, the program prints how many spaces
 // they are going to move, and what number square they land on. This also
@@ -21,50 +21,60 @@
 using namespace std;
 
 const char YES = 'y';
-const int MIN_SPIN = 1;
-const int MAX_SPIN = 6;
-const int WINNING_SQUARE = 100;
+const int MIN_SPIN = 1; // min spin
+const int MAX_SPIN = 6; // max spin
+const int WINNING_SQUARE = 100; // board size
+const string COMPUTER_NAME = "HAL"; // computer name
 
 void welcome();
-int spin();
-int move(int spaces, int position);
-int checkLadder(int position);
-int checkChutes(int position);
-void goodbye();
+// displays welcome message and game description
 
+string getName();
+// asks for player's name
+// returns the player's name
+
+int spin();
+// returns a valid spin value from MIN_SPIN to MAX_SPIN
+
+int takeTurn(int position, string name);
+// takes the turn for name
+// returns the new position
+
+int checkLocation(int position);
+// returns value of ladder or chute at that location
+// returns 0 if none
+
+void goodbye();
 
 int main()
 {
-  string name; // Stores the user's name.
+  string userName; // Stores the user's name.
   char answer; // Stores user's answer to play the game again.
-  int userPosition; // Stores the current user's positon on the board is.
-  int pcPosition; // Stores the current computer's position on the board is.
-  int userSpin; // Stores the current spin of the user.
-  int pcSpin; // Stores the current spin of the pc.
-  int whosTurn; // Stores who turn it is.
+  int userPosition; // Stores the user's positon on the board.
+  int computerPosition; // Stores the computer's position on the board.
+  bool computerTurn = false;
   srand(time(0));
 
   welcome();
+  userName = getName();
 
-  cout << "Enter your name: ";
-  getline(cin, name);
+  answer = 'y';
 
-  ans = 'y';
-  userPosition = 0;
-  pcPosition = 0;
-  whosTurn = 1;
-
-  while(tolower(ans) == YES) {
-    int moves = spin();
-    if(whosTurn % 2 != 0) {
-      userPosition += moves;
-      checkLadder(userPosition);
-      checkChutes(userPositiion);
+  while(tolower(answer) == YES) {
+    userPosition = 0;
+    computerPosition = 0;
+    while(userPosition != WINNING_SQUARE &&
+      computerPosition != WINNING_SQUARE) {
+        if(computerTurn) {
+          computerPosition = takeTurn(computerPosition, COMPUTER_NAME);
+          computerTurn = false;
+        } else {
+          userPosition = takeTurn(userPosition, userName);
+          computerTurn = true;
+        }
     }
-
-
     cout << "Want to play again? (y/n): ";
-    cin >> ans;
+    cin >> answer;
   }
   return 0;
 }
@@ -72,75 +82,111 @@ int main()
 void welcome()
 {
   cout << endl << endl;
-  cout << "Welcome to the Chutes and Ladders Game! " <<endl;
-    // put directions about how the game works here
+  cout << "Welcome to the Chutes and Ladders Game! " << endl << endl;
+  cout << "The first player to reach " << WINNING_SQUARE
+       << "(not going over) to win the game!" << endl;
+  cout << "All you need to do is press enter to spin for moves." << endl;
+  cout << "On certain spaces, there will be chutes that will move you down the"
+       << " board, " << endl
+       << "or ladders that will move you up the board."
+       << endl << endl;
 }
+
+string getName()
+{
+  string name;
+  cout << "Your opponent will be HAL." << endl << "Please enter your name: ";
+  getline(cin, name);
+  return name;
+}
+
 int spin()
 {
   int moves = rand() % ((MAX_SPIN - MIN_SPIN) + 1) + MIN_SPIN;
   return moves;
 }
 
-int move(int spaces, int position)
+int takeTurn(int position, string name)
 {
-  return position + spaces;
-  // this will update the pc or user's position on the board
+  int currentSpin;
+  int currentPosition = position;
+  //tells player where they are on the board
+  cout << "It is " << name << "'s turn now. " << endl;
+  cout << name << " is on square " << position << endl;
+  cout << "Press enter to spin.....";
+  cin.get();
+  currentSpin = spin();
+  cout << name << " spun a " << currentSpin << "." << endl;
+  cout << "Press enter to continue....";
+  cin.get();
+
+  if(currentPosition + currentSpin <= WINNING_SQUARE) {
+    currentPosition += currentSpin;
+  }
+
+  if((checkLocation(position)) < 0 ) {
+    cout << name << " landed on a chute!" << endl;
+    currentPosition += checkLocation(position);
+    cout << name << " is now at " << currentPosition << " square!"
+         << endl << endl;
+  } else if (checkLocation(position) > 0) {
+    cout << name << " landed on a ladder!" << endl;
+    currentPosition += checkLocation(position);
+    cout << name << " is now at " << " square " << currentPosition << "!"
+         << endl << endl;
+  } else if (position == WINNING_SQUARE) {
+    cout << name << " landed on square " << WINNING_SQUARE << "! " << endl;
+    cout << name << " has won the game! " << endl;
+  } else {
+    cout << name << " did not land on a chute or ladder." << endl;
+    cout << name << " is now at square " << currentPosition << "!"
+         << endl << endl;
+  }
+  return currentPosition;
 }
 
-int checkLadder(int positon)
+int checkLocation(int position)
 {
-  int newPosition = position;
-
-  if(position == 1){
-    newPosition += 37;
+  if (position == 1) {
+    return 37;
   } else if (position == 4) {
-    newPosition += 10;
+    return 10;
   } else if (position == 9){
-    newPosition += 12;
+    return 12;
   } else if (position == 23){
-    newPosition += 21;
+    return 21;
   } else if (position == 28) {
-    newPosition += 56;
+    return 56;
   } else if (position == 36) {
-    newPosition += 8;
+    return 8;
   } else if (position == 51) {
-    newPosition += 15;
+    return 15;
   } else if (position == 71) {
-    newPosition += 19;
+    return 19;
   } else if (position == 80) {
-    newPosition += 20;
-  }
-  return newPosition
- // this checks if the pc or user landed on a ladder the updates
-}
-
-void checkChute(int position)
-{
-  int newPosition = position;
-
-  if(position == 98) {
-    newPosition -= 20;
-  } else if (position == 95) {
-    newPosition -= 20;
+    return 20;
+  } else if(position == 98) {
+    return -20;
+  } else if(position == 95) {
+    return -20;
   } else if (position == 93) {
-    newPosition -= 20;
+    return -20;
   } else if (position == 87) {
-    newPosition -= 63;
+    return -63;
   } else if (position == 64) {
-    newPosition -= 4;
+    return -4;
   } else if (position == 62) {
-    newPosition -= 43;
+    return -43;
   } else if (position == 56) {
-    newPosition -= 3;
+    return -3;
   } else if (position == 49) {
-    newPosition -= 38;
+    return -38;
   } else if (position == 48) {
-    newPosition -= 22;
+    return -22;
   } else if (position == 16) {
-    newPosition -= 10;
+    return -10;
   }
-  return newPosition;
-  // this checks if the pc of user landed on a chute
+  return 0;
 }
 
 void goodbye()
