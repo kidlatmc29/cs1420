@@ -2,17 +2,29 @@
 // p3.cpp
 // 2-16-2020
 
-// Purpose: This program plays the game Chutes and Ladders with the user.
+// Purpose: This program plays the game Chutes and Ladders with the user
+// against the computer as an opponent.
 
 // Input: The user is prompted to give their name to the program. The user
-// preseses enter spin and to advance through turns.
+// presses enter spin and to advance through turns.
+
+// Processing: The program will spin the spinner by generating a random number
+// at the beginning of a turn. That random number is then added to the player's
+// position on the board. The new position will be checked if it is a chute
+// or ladder. The final position for that turn will be updated based on the
+// specific chute or ladder.
 
 // Output: When the user spins to move, the program prints how many spaces
 // they are going to move, and what number square they land on. This also
 // occurs when the computer spins, which tells the user how many spaces the
 // computer will move, and what number square the computer lands on.
 
-// Example:
+// Example: The user supplies the name "Alex." The user goes first, indicated
+// by the message: "It's Alex's turn now." The user is then prompted to press
+// enter to spin the spinner. The spinner lands on 4 and is inidicated by the
+// message: "Alex spun a 4." Then the program checks if the user has landed on
+// a chute and ladder. 
+
 
 #include <iostream>
 #include <stdlib.h>
@@ -23,6 +35,7 @@ using namespace std;
 const char YES = 'y';
 const int MIN_SPIN = 1; // min spin
 const int MAX_SPIN = 6; // max spin
+const int STARTING_POSITION = 0; // start square for players
 const int WINNING_SQUARE = 100; // board size
 const string COMPUTER_NAME = "HAL"; // computer name
 
@@ -58,24 +71,25 @@ int main()
   welcome();
   userName = getName();
 
-  answer = 'y';
+  answer = YES;
 
   while(tolower(answer) == YES) {
-    userPosition = 0;
-    computerPosition = 0;
+    userPosition = STARTING_POSITION;
+    computerPosition = STARTING_POSITION;
     while(userPosition != WINNING_SQUARE &&
       computerPosition != WINNING_SQUARE) {
-        if(computerTurn) {
-          computerPosition = takeTurn(computerPosition, COMPUTER_NAME);
-          computerTurn = false;
-        } else {
-          userPosition = takeTurn(userPosition, userName);
-          computerTurn = true;
-        }
-    }
-    cout << "Want to play again? (y/n): ";
-    cin >> answer;
+      if(computerTurn) {
+        computerPosition = takeTurn(computerPosition, COMPUTER_NAME);
+        computerTurn = false;
+      } else {
+        userPosition = takeTurn(userPosition, userName);
+        computerTurn = true;
+      }
   }
+  cout << "Want to play again? (y/n): ";
+  cin >> answer;
+  }
+  goodbye();
   return 0;
 }
 
@@ -112,7 +126,7 @@ int takeTurn(int position, string name)
   int currentPosition = position;
   //tells player where they are on the board
   cout << "It is " << name << "'s turn now. " << endl;
-  cout << name << " is on square " << position << endl;
+  cout << name << " is on square " << position << "." << endl;
   cout << "Press enter to spin.....";
   cin.get();
   currentSpin = spin();
@@ -124,17 +138,17 @@ int takeTurn(int position, string name)
     currentPosition += currentSpin;
   }
 
-  if((checkLocation(position)) < 0 ) {
+  if((checkLocation(currentPosition)) < 0 ) {
     cout << name << " landed on a chute!" << endl;
-    currentPosition += checkLocation(position);
-    cout << name << " is now at " << currentPosition << " square!"
+    currentPosition += checkLocation(currentPosition);
+    cout << name << " is now at square " <<  currentPosition << "!"
          << endl << endl;
-  } else if (checkLocation(position) > 0) {
+  } else if (checkLocation(currentPosition) > 0) {
     cout << name << " landed on a ladder!" << endl;
-    currentPosition += checkLocation(position);
-    cout << name << " is now at " << " square " << currentPosition << "!"
+    currentPosition += checkLocation(currentPosition);
+    cout << name << " is now at square " << currentPosition << "!"
          << endl << endl;
-  } else if (position == WINNING_SQUARE) {
+  } else if (currentPosition == WINNING_SQUARE) {
     cout << name << " landed on square " << WINNING_SQUARE << "! " << endl;
     cout << name << " has won the game! " << endl;
   } else {
