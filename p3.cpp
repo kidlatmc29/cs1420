@@ -5,30 +5,28 @@
 // Purpose: This program plays the game Chutes and Ladders with the user
 // against the computer as an opponent.
 
-// Input: The user is prompted to give their name to the program. The user
-// presses enter spin and to advance through turns.
+// Input: The user provides a name to the program and presses enter to spin.
 
 // Processing: The program will spin the spinner by generating a random number
 // at the beginning of a turn. That random number is then added to the player's
 // position on the board. The new position will be checked if it is a chute
-// or ladder. The final position for that turn will be updated based on the
-// specific chute or ladder.
+// or ladder. The final position is updated accordingly.
 
 // Output: When the user spins to move, the program prints how many spaces
-// they are going to move, and what number square they land on. This also
-// occurs when the computer spins, which tells the user how many spaces the
-// computer will move, and what number square the computer lands on.
+// they are going to move. This also occurs when the computer spins, which
+// tells the user how many spaces the computer will move and what number
+// square the computer lands on. The program prints out if the user lands on
+// a ladder, chute or neither.
 
-// Example: The user supplies the name "Alex." The user goes first, indicated
-// by the message: "It's Alex's turn now." The user is then prompted to press
-// enter to spin the spinner. The spinner lands on 4 and is inidicated by the
-// message: "Alex spun a 4." Then the program checks if the user has landed on
-// a chute and ladder. 
+// Example: Name given: "Alex" Prints the message: "It's Alex's turn now. Alex
+// is at square 0." A spin: "Alex spun a 4." After checking location:
+// "Alex landed on a ladder!" Final position is updated: "Alex is now at
+// square 14."
 
 
 #include <iostream>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -58,6 +56,7 @@ int checkLocation(int position);
 // returns 0 if none
 
 void goodbye();
+// displays goodbye message
 
 int main()
 {
@@ -77,7 +76,7 @@ int main()
     userPosition = STARTING_POSITION;
     computerPosition = STARTING_POSITION;
     while(userPosition != WINNING_SQUARE &&
-      computerPosition != WINNING_SQUARE) {
+          computerPosition != WINNING_SQUARE) {
       if(computerTurn) {
         computerPosition = takeTurn(computerPosition, COMPUTER_NAME);
         computerTurn = false;
@@ -98,32 +97,34 @@ void welcome()
   cout << endl << endl;
   cout << "Welcome to the Chutes and Ladders Game! " << endl << endl;
   cout << "The first player to reach " << WINNING_SQUARE
-       << "(not going over) to win the game!" << endl;
-  cout << "All you need to do is press enter to spin for moves." << endl;
+       << " exactly, wins the game!" << endl;
+  cout << "Press enter to spin the spinner for moves." << endl;
   cout << "On certain spaces, there will be chutes that will move you down the"
        << " board, " << endl
-       << "or ladders that will move you up the board."
+       << "or ladders that will move you up the board. Good luck!"
        << endl << endl;
 }
 
 string getName()
 {
   string name;
-  cout << "Your opponent will be HAL." << endl << "Please enter your name: ";
+  cout << "Your opponent will be HAL. Please enter your name: ";
   getline(cin, name);
+  cout << endl;
   return name;
 }
 
 int spin()
 {
-  int moves = rand() % ((MAX_SPIN - MIN_SPIN) + 1) + MIN_SPIN;
-  return moves;
+  return rand() % ((MAX_SPIN - MIN_SPIN) + 1) + MIN_SPIN;
 }
 
 int takeTurn(int position, string name)
 {
   int currentSpin;
   int currentPosition = position;
+  int adjustment; // stores moves after chute or ladder
+
   //tells player where they are on the board
   cout << "It is " << name << "'s turn now. " << endl;
   cout << name << " is on square " << position << "." << endl;
@@ -134,23 +135,29 @@ int takeTurn(int position, string name)
   cout << "Press enter to continue....";
   cin.get();
 
+
+  // checks if moves from spin will go over WINNING_SQUARE
   if(currentPosition + currentSpin <= WINNING_SQUARE) {
     currentPosition += currentSpin;
   }
 
-  if((checkLocation(currentPosition)) < 0 ) {
+  adjustment = checkLocation(currentPosition);
+
+  if (currentPosition == WINNING_SQUARE ||
+     (currentPosition + adjustment) == WINNING_SQUARE) {
+    cout << name << " landed on square " << WINNING_SQUARE << "! " << endl;
+    cout << name << " has won the game! Congrats!" << endl << endl;
+    currentPosition += adjustment;
+  } else if (adjustment < 0) {
     cout << name << " landed on a chute!" << endl;
-    currentPosition += checkLocation(currentPosition);
+    currentPosition += adjustment;
     cout << name << " is now at square " <<  currentPosition << "!"
          << endl << endl;
-  } else if (checkLocation(currentPosition) > 0) {
+  } else if (adjustment > 0) {
     cout << name << " landed on a ladder!" << endl;
-    currentPosition += checkLocation(currentPosition);
+    currentPosition += adjustment;
     cout << name << " is now at square " << currentPosition << "!"
          << endl << endl;
-  } else if (currentPosition == WINNING_SQUARE) {
-    cout << name << " landed on square " << WINNING_SQUARE << "! " << endl;
-    cout << name << " has won the game! " << endl;
   } else {
     cout << name << " did not land on a chute or ladder." << endl;
     cout << name << " is now at square " << currentPosition << "!"
@@ -205,5 +212,6 @@ int checkLocation(int position)
 
 void goodbye()
 {
-  cout << "Thanks for playing! Goodbye.... " << endl << endl;
+  cout << endl << endl;
+  cout << "Thanks for playing! Goodbye.... " << endl << endl << endl;
 }
