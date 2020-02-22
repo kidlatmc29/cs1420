@@ -23,7 +23,6 @@
 // "Alex landed on a ladder!" Final position is updated: "Alex is now at
 // square 14."
 
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -85,8 +84,8 @@ int main()
         computerTurn = true;
       }
   }
-  cout << "Want to play again? (y/n): ";
-  cin >> answer;
+    cout << "Want to play again? (y/n): ";
+    cin >> answer;
   }
   goodbye();
   return 0;
@@ -134,7 +133,6 @@ int takeTurn(int position, string name)
   cout << name << " spun a " << currentSpin << "." << endl;
   cout << "Press enter to continue....";
   cin.get();
-
 
   // checks if moves from spin will go over WINNING_SQUARE
   if(currentPosition + currentSpin <= WINNING_SQUARE) {
