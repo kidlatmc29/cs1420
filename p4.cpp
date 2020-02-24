@@ -19,7 +19,7 @@ const char YES = 'y';
 const char EXPERT = 'e';
 const char BEGINNER = 'b';
 const char LEFT_BRACKET = '[';
-const char RIGHT_BRAKET = ']';
+const char RIGHT_BRACKET = ']';
 const char SPACE = ' ';
 const char ASTERISK = '*';
 const char UNDERSCORE = '_';
@@ -46,7 +46,7 @@ void displayBoard(char board[][ROWS], int c1row = -1, int c1col =1,
 // prints the board to screen with the astricks and underscores,
 // with one card flipped over and with both cards flipped over
 
-int takeTurn();
+int takeTurn(char board[][ROWS], int waitTime);
 // this is where the user is asked about the cards
 // wait() is called here
 // removeMatch() is called here too
@@ -65,21 +65,31 @@ void goodbye();
 
 int main()
 {
-  int numOfTurns = 0;
-  char ans = YES;
-  int matchedPairs = 0;
-  int waitTime;
-  char board[ROWS][COLS];
   srand(time(0));
+  int numOfTurns = 0; // tracks the number of turns the player takes
+  int matchedPairs = 0; // tracks the number of pairs the player gets
+  int waitTime; // stores the wait time returned by getDifficulty();
+  char board[ROWS][COLS]; //char array for the board of cards
+  bool noError = false; // Bool that make sures the board was made
+  char ans = YES;
 
   welcome();
 
   while(tolower(answ) == YES) {
-      difficulty = getDifficulty();
-      createBoard();
-      while(matchedPairs > BOARD_CLEARED) {
-        takeTurn();
+      waitTime = getDifficulty();
+      noError = createBoard();
+      if(!noError) {
+        ans = 'n';
+        cout << "Error with file!" << endl;
+        }
+
+      while(matchedPairs > BOARD_CLEARED && createBoard() == noError) {
+        takeTurn(board[][ROWS], waitTime);
+        numOfTurns++;
       }
+      cout << "You won! Your score is " << numOfTurns << "." << endl;
+      cout << "Do you want to play again? (y/n): ";
+      cin >> ans;
   }
 
   goodbye();
@@ -90,7 +100,8 @@ void welcome()
 {
   cout << endl << endl;
   cout << "Welcome to the Memory Game! " << endl;
-  cout << "You will have a 4 x 3 board of cards that will need to be matched.";
+  cout << "You will have a " << ROWS << " by "
+       << COLS << "board of cards that you will need to match.";
   cout << endl << endl;
 }
 
@@ -135,20 +146,47 @@ bool createBoard(char board[][COLS])
   return true;
 }
 
-void displayBoard(char board[][ROWS], int c1row = -1, int c1col =1,
+void displayBoard(char board[][ROWS], int c1row = -1, int c1col = -1,
     int c2row = -1, int c2col = -1)
 {
+
+  // prints top labels of the board
   for(int i = 0; i < ROWS; i++) {
     cout << SPACE << SPACE << SPACE << i;
   }
 
-  for(int row = 0; row < ROW; row++) {
+  cout << SPACE << SPACE;
 
+  for(int row = 0; row < ROW; row++) {
+    cout << row << SPACE;
+    for(int col = 0; col < COLS; col++) {
+      cout << LEFT_BRACKET;
+      if(row == c1row && col == c1col) {
+        cout << board[c1row][c1col];
+      } else if (row == c2row && col == c2col) {
+        cout << board[c2row][c2col];
+      } else {
+        cout << ASTERISK;
+      }
+      cout << RIGHT_BRACKET << SPACE;
+    }
   }
+
 }
 
-int takeTurn()
+int takeTurn(char board[][COLS]);
 {
+  int currentC1Row;
+  int currentC1Col;
+  int currentC2Row;
+  int currentC2Col;
+
+  displayBoard(const char board[][COLS]);
+  pickFirstCard(const board[][COLS], currentC1Row, currentC1Col);
+  displayBoard(const board[][COLS], currentC1Row, currentC1Col);
+  getSecondCard(const board[][COLS], currentC1Row, currentC1Col);
+  displayBoard(const board[][COLS], currentC1Row, currentC1Col, current);
+  //need to remove if match!~!!!
   return 1;
 }
 
@@ -158,6 +196,38 @@ void wait(int seconds)
   endwait = clock() + seconds * CLOCKS_PER_SEC;
 
   while (clock() < endwait){}
+}
+
+int pickFirstCard(char board[][COLS], int& c1row, int& c1col)
+{
+  int cardRow -1;
+  int cardCol; -1;
+
+  while (cardRow < 0 || cardRow > ROWS - 1) {
+    cout << "Row? ";
+    cin >> cardRow;
+  }
+
+  c1row = cardRow;
+
+  while (cardCol < 0 || cardCol > COLS - 1) {
+    cout << "Col? ";
+    cin >> cardCol;
+  }
+    c1col = cardCol;
+}
+
+int pickSecondCard(char board[][COLS], int& c1row, int& c1col)
+{
+ // asks for row
+ // makes sure it valid
+ // makes sure it's not the same as c1row
+// else repeat
+
+ // asks for Col
+  // makes sure it's valid
+  // makes sure it's not the same a c2row
+  // else repeat
 }
 
 void goodbye()
