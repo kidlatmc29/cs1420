@@ -186,7 +186,7 @@ int takeTurn(char board[][COLS]);
   displayBoard(const board[][COLS], currentC1Row, currentC1Col);
   getSecondCard(const board[][COLS], currentC1Row, currentC1Col);
   displayBoard(const board[][COLS], currentC1Row, currentC1Col, current);
-  //need to remove if match!~!!!
+  //need to remove if match!!!!
   return 1;
 }
 
