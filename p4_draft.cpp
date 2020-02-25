@@ -28,8 +28,8 @@ const int ROWS = 4;
 const int COLS = 3;
 const int BEGINNER_TIME = 10;
 const int EXPERT_TIME = 5;
-const string BOARD_A = /home/fac/sreeder/class/cs1420/p4data1.dat;
-const string BOARD_B = /home/fac/sreeder/class/cs1420/p4data2.dat;
+const string BOARD_A = "/home/fac/sreeder/class/cs1420/p4data1.dat";
+const string BOARD_B = "/home/fac/sreeder/class/cs1420/p4data2.dat";
 const int BOARD_CLEARED = 12;
 
 void welcome();
@@ -42,24 +42,23 @@ bool createBoard(char board[][ROWS], string fileName);
 // returns false if otherwise
 
 void displayBoard(char board[][ROWS], int c1row = -1, int c1col =1,
-    int c2row = -1, int c2col = -1);
+                  int c2row = -1, int c2col = -1);
 // prints the board to screen with the astricks and underscores,
 // with one card flipped over and with both cards flipped over
 
-int takeTurn(char board[][ROWS], int waitTime);
-// this is where the user is asked about the cards
-// wait() is called here
-// removeMatch() is called here too
+void takeTurn(char board[][ROWS], int waitTime);
+// this is where the user is asked to give coordinates of the cards
 
-int pickFirstCard();
-// paras is the current board
-// returns row and col
+int pickFirstCard(char board[][COLS], int& c1row, int& c1col);
+// returns matchPairs + 1 if a match was found
+// otherwise returns matchPairs
 
-int pickSecondCard();
+void pickSecondCard(char board[][COLS], int c1row, int c1col,
+                    int& c2row, int& c2col);
 // params is the current board AND the row and col of FIRST card
 
 void wait(int seconds);
-// pauses the program for x seconds
+// pauses the program for x seconds based on difficulty
 
 void goodbye();
 
@@ -80,11 +79,11 @@ int main()
       noError = createBoard();
       if(!noError) {
         ans = 'n';
-        cout << "Error with file!" << endl;
+        cout << "Error with file! Quitting program...." << endl;
         }
 
       while(matchedPairs > BOARD_CLEARED && createBoard() == noError) {
-        takeTurn(board, waitTime);
+        int takeTurn(board, waitTime,matchedPairs);
         numOfTurns++;
       }
 
@@ -108,8 +107,12 @@ void welcome()
 
 int getDifficulty()
 {
-  char choice;
+  char choice = 'a';
   int time;
+
+  while(choice != BEGINNER
+
+  )
   cout << "There are two difficulties for this game. Please choose one.";
   cout << endl << "Beginner (b) or expert (e): "
   cin >> choice;
@@ -148,9 +151,8 @@ bool createBoard(char board[][COLS])
 }
 
 void displayBoard(char board[][ROWS], int c1row = -1, int c1col = -1,
-    int c2row = -1, int c2col = -1)
+                  int c2row = -1, int c2col = -1)
 {
-
   // prints top labels of the board
   for(int i = 0; i < ROWS; i++) {
     cout << SPACE << SPACE << SPACE << i;
@@ -158,7 +160,7 @@ void displayBoard(char board[][ROWS], int c1row = -1, int c1col = -1,
 
   cout << SPACE << SPACE;
 
-  for(int row = 0; row < ROW; row++) {
+  for(int row = 0; row < ROWS; row++) {
     cout << row << SPACE;
     for(int col = 0; col < COLS; col++) {
       cout << LEFT_BRACKET;
@@ -175,27 +177,25 @@ void displayBoard(char board[][ROWS], int c1row = -1, int c1col = -1,
 
 }
 
-int takeTurn(char board[][COLS], int waitTime);
+void takeTurn(char board[][COLS], int waitTime);
 {
   int currentC1Row = -1;
   int currentC1Col = -1;
   int currentC2Row = -1;
   int currentC2Col = -1;
-  bool isMatch = false;
 
   displayBoard(const char board);
   pickFirstCard(const board, currentC1Row, currentC1Col);
-  displayBoard(const board, currentC1Row, currentC1Col); // fix this
+  displayBoard(const board, currentC1Row, currentC1Col);
   getSecondCard(const board, currentC1Row, currentC1Col);
-  displayBoard(const board, currentC1Row, currentC1Col, current); // fix this
-
-  isMatch = removeMatch();
-  if(!isMatch) {
-    wait(waitTime)
+  displayBoard(const board, currentC1Row, currentC1Col,
+               currentC2Row, currentC2Col);
+  if(board[currentC1Row][currentC1Col] == board[currentC2Row][currentC1Col]){
+    board[currentC1Row][currentC1Col] = UNDERSCORE;
+    board[currentC2Row][currentC2Col] = UNDERSCORE;
+  } else {
+    wait(waitTime);
   }
-
-
-  return 1;
 }
 
 void wait(int seconds)
@@ -206,7 +206,7 @@ void wait(int seconds)
   while (clock() < endwait){}
 }
 
-int pickFirstCard(char board[][COLS], int& c1row, int& c1col)
+void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
 {
   int cardRow = -1;
   int cardCol =  -1;
@@ -225,17 +225,35 @@ int pickFirstCard(char board[][COLS], int& c1row, int& c1col)
     c1col = cardCol;
 }
 
-int pickSecondCard(char board[][COLS], int& c1row, int& c1col)
+void pickSecondCard(char board[][COLS], int& c1row, int& c1col, int& c2row,
+                    int& c2col)
 {
- // asks for row
- // makes sure it valid
- // makes sure it's not the same as c1row
-// else repeat
 
- // asks for Col
-  // makes sure it's valid
-  // makes sure it's not the same a c2row
-  // else repeat
+  //still need to check for cards that are NOT IN PLAY
+  int cardRow = c2row;
+  int cardCol =  c2col;
+  bool same = true;
+
+  while ((cardRow < 0 || cardRow > ROWS)) {
+    cout << "Row? ";
+    cin >> cardRow;
+    while(cardCol != c1row) {
+      cout << "Row? ";
+      cin >> cardRow;
+    }
+  }
+
+  c2row = cardRow;
+
+  while (cardCol < 0 || cardCol > COLS) {
+    cout << "Col? ";
+    cin >> cardCol;
+    while(carCol != c1col)
+    cout << "Col? ";
+    cin >> cardCol;
+    }
+    c2col = cardCol;
+  }
 }
 
 void goodbye()
