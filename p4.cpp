@@ -84,9 +84,10 @@ int main()
         }
 
       while(matchedPairs > BOARD_CLEARED && createBoard() == noError) {
-        takeTurn(board[][ROWS], waitTime);
+        takeTurn(board, waitTime);
         numOfTurns++;
       }
+
       cout << "You won! Your score is " << numOfTurns << "." << endl;
       cout << "Do you want to play again? (y/n): ";
       cin >> ans;
@@ -116,13 +117,14 @@ int getDifficulty()
   if(tolower(choice) == EXPERT_TIME) {
     time = EXPERT_TIME;
   } else {
-  time = BEGINNER_TIME;
+    time = BEGINNER_TIME;
   }
   return time;
 }
 
 bool createBoard(char board[][COLS])
 {
+  ifStream inFile;
   string fileName;
   int ranNum = rand() % ((20 - 10) + 1) + 10;
   if((randNum % 2) == 0) { // file is chosen based on even or odd rand num
@@ -130,7 +132,6 @@ bool createBoard(char board[][COLS])
   } else {
     fileName = BOARD_B;
   }
-  ifStreaminFile;
 
   inFile.open(fileName);
   if(inFile.fail()) {
@@ -174,19 +175,26 @@ void displayBoard(char board[][ROWS], int c1row = -1, int c1col = -1,
 
 }
 
-int takeTurn(char board[][COLS]);
+int takeTurn(char board[][COLS], int waitTime);
 {
-  int currentC1Row;
-  int currentC1Col;
-  int currentC2Row;
-  int currentC2Col;
+  int currentC1Row = -1;
+  int currentC1Col = -1;
+  int currentC2Row = -1;
+  int currentC2Col = -1;
+  bool isMatch = false;
 
-  displayBoard(const char board[][COLS]);
-  pickFirstCard(const board[][COLS], currentC1Row, currentC1Col);
-  displayBoard(const board[][COLS], currentC1Row, currentC1Col);
-  getSecondCard(const board[][COLS], currentC1Row, currentC1Col);
-  displayBoard(const board[][COLS], currentC1Row, currentC1Col, current);
-  //need to remove if match!!!!
+  displayBoard(const char board);
+  pickFirstCard(const board, currentC1Row, currentC1Col);
+  displayBoard(const board, currentC1Row, currentC1Col); // fix this
+  getSecondCard(const board, currentC1Row, currentC1Col);
+  displayBoard(const board, currentC1Row, currentC1Col, current); // fix this
+
+  isMatch = removeMatch();
+  if(!isMatch) {
+    wait(waitTime)
+  }
+
+
   return 1;
 }
 
@@ -200,8 +208,8 @@ void wait(int seconds)
 
 int pickFirstCard(char board[][COLS], int& c1row, int& c1col)
 {
-  int cardRow -1;
-  int cardCol; -1;
+  int cardRow = -1;
+  int cardCol =  -1;
 
   while (cardRow < 0 || cardRow > ROWS - 1) {
     cout << "Row? ";
