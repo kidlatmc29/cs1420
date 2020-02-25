@@ -173,6 +173,11 @@ void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
   while (cardRow < 0 || cardRow > ROWS - 1) {
     cout << "Row? ";
     cin >> cardRow;
+
+    if(board[c1Row][c1Col] == UNDERSCORE) {
+      cout << "Card Out Of Play! Pick Again...";
+      cardRow = -1;
+    }
   }
 
   c1row = cardRow;
@@ -180,7 +185,13 @@ void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
   while (cardCol < 0 || cardCol > COLS - 1) {
     cout << "Col? ";
     cin >> cardCol;
+
+    if(board[c1Row][c1Col] == UNDERSCORE) {
+      cout << "Card Out Of Play! Pick Again...";
+      cardCol = -1;
+    }
   }
+  
     c1col = cardCol;
 }
 void goodbye()
