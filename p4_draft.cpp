@@ -50,8 +50,7 @@ void takeTurn(char board[][ROWS], int waitTime);
 // this is where the user is asked to give coordinates of the cards
 
 int pickFirstCard(char board[][COLS], int& c1row, int& c1col);
-// returns matchPairs + 1 if a match was found
-// otherwise returns matchPairs
+
 
 void pickSecondCard(char board[][COLS], int c1row, int c1col,
                     int& c2row, int& c2col);
@@ -110,12 +109,11 @@ int getDifficulty()
   char choice = 'a';
   int time;
 
-  while(choice != BEGINNER
-
-  )
-  cout << "There are two difficulties for this game. Please choose one.";
-  cout << endl << "Beginner (b) or expert (e): "
-  cin >> choice;
+  while(choice != BEGINNER && choice != EXPERT) {
+    cout << "There are two difficulties for this game. Please choose one.";
+    cout << endl << "Beginner (b) or expert (e): "
+    cin >> choice;
+  }
 
   if(tolower(choice) == EXPERT_TIME) {
     time = EXPERT_TIME;
