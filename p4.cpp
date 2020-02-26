@@ -218,15 +218,14 @@ void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
       cout << "Col? ";
       cin >> cardCol;
     }
-        if(board[c2Row][c2Col] == UNDERSCORE) {
+        if(board[c2row][c2col] == UNDERSCORE) {
           cout << "Card Out Of Play! Please Pick Again...";
           cardRow = INVALID;
           cardCol = INVALID;
-        } else if (cardRow == c1Row && cardCol == c1Col) {
+        } else if (cardRow == c1row && cardCol == c1col) {
           cout << "Already Picked This Card! Please Pick Again...";
         } else {
         c1col = cardCol;
-      }
     }
   }
 }
