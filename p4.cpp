@@ -38,6 +38,7 @@ const int COL_LABEL = 4;
 const string BOARD_A = "/home/fac/sreeder/class/cs1420/p4data1.dat";
 const string BOARD_B = "/home/fac/sreeder/class/cs1420/p4data2.dat";
 const int INVALID = -1;
+const int SCREEN_HEIGHT = 40;
 const int BOARD_CLEARED = 12;
 
 void welcome();
@@ -58,6 +59,12 @@ void pickFirstCard(char board[][COLS], int& c1row, int& c1col);
 void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
                     int& c2col);
 // user is asked to pick a second card to turn over
+
+void wait(int seconds);
+// pauses the program for x seconds based on difficulty
+
+void takeTurn(char board[][ROWS], int waitTime);
+// this is where the user is asked to give coordinates of the cards
 
 void goodbye();
 
@@ -84,9 +91,11 @@ int main()
       }
     displayBoard(board);
     pickFirstCard(board, currentC1Row, currentC1Col);
-    cout << "the first card you picked was: " << currentC1Row << " " << currentC1Col << endl;
+    displayBoard(board, currentC1Row, currentC1Col);
+  //  cout << "the first card you picked was: " << currentC1Row << " " << currentC1Col << endl;
     pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
-    cout << " The second card you picked was " << currentC2Row << currentC2Col << endl;
+    displayBoard(board, currentC1Row, currentC1Col, currentC2Row, currentC2Col);
+  //  cout << " The second card you picked was " << currentC2Row << " " << currentC2Col << endl;
     cout << "Do you want to play again? (y/n): ";
     cin >> ans;
     waitTime = 0;
@@ -151,6 +160,10 @@ bool createBoard(char board[][COLS])
 void displayBoard(char board[][COLS], int c1row, int c1col, int c2row,
                   int c2col)
 {
+  for(int line = 0; line <= SCREEN_HEIGHT; line++){
+    cout << endl;
+  }
+
   for(int i = 0; i < COLS; i++) {
     cout << setw(COL_LABEL) << i;
   }
@@ -227,6 +240,14 @@ void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
       cardCol = INVALID;
     }
   }
+}
+
+void wait(int seconds)
+{
+  clock_t endwait;
+  endwait = clock() + seconds * CLOCKS_PER_SEC;
+
+  while (clock() < endwait){}
 }
 
 void goodbye()
