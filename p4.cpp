@@ -205,9 +205,8 @@ void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
 {
   int cardRow = INVALID;
   int cardCol = INVALID;
-  bool same = false; // checks if second card is the same as the first one
 
-  while(cardRow == INVALID && cardCol == INVALID && !same) {
+  while(cardRow == INVALID && cardCol == INVALID) {
     while (cardRow < 0 || cardRow > ROWS - 1) {
       cout << "Row? ";
       cin >> cardRow;
@@ -218,6 +217,15 @@ void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
       cin >> cardCol;
     }
     c2col = cardCol;
+    if(board[c2row][c2col] == UNDERSCORE) {
+      cout << "Card Out Of Play! Please Pick Again..." << endl;
+      cardRow = INVALID;
+      cardCol = INVALID;
+    } else if(cardRow == c1row && cardCol == c1col) {
+      cout << "Already Picked This Card! Please Pick Again..." << endl;
+      cardRow = INVALID;
+      cardCol = INVALID;
+    }
   }
 }
 
