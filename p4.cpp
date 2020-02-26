@@ -47,6 +47,8 @@ int getDifficulty();
 // returns the wait time based on the player's difficulty
 
 bool createBoard(char board[][COLS]);
+// returns true if a char array is sucessfuly made from reading a file
+// returns false otherwise
 
 void displayBoard(char board[][COLS], int c1row = -1, int c1col = -1,
                   int c2row = -1, int c2col = -1);
@@ -54,17 +56,17 @@ void displayBoard(char board[][COLS], int c1row = -1, int c1col = -1,
 // with one card flipped over and with both cards flipped over
 
 void pickFirstCard(char board[][COLS], int& c1row, int& c1col);
-// user is asked to pick the first card to turn over
+// returns the row and col values of the first card
 
 void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
                     int& c2col);
-// user is asked to pick a second card to turn over
+// returns row and col values of the second card
 
 void wait(int seconds);
 // pauses the program for x seconds based on difficulty
 
 void takeTurn(char board[][ROWS], int waitTime);
-// this is where the user is asked to give coordinates of the cards
+// asks for cards to pick and checks if there is a match or not
 
 void goodbye();
 
@@ -77,8 +79,8 @@ int main()
 
   int currentC1Row = INVALID;
   int currentC1Col = INVALID;
-  int currentC2Row = -1;
-  int currentC2Col = -1;
+  int currentC2Row = INVALID;
+  int currentC2Col = INVALID;
 
   welcome();
   while(tolower(ans) == YES) {
@@ -89,13 +91,7 @@ int main()
         ans = 'n';
         cout << "Error with file! Quitting program...." << endl;
       }
-    displayBoard(board);
-    pickFirstCard(board, currentC1Row, currentC1Col);
-    displayBoard(board, currentC1Row, currentC1Col);
-  //  cout << "the first card you picked was: " << currentC1Row << " " << currentC1Col << endl;
-    pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
-    displayBoard(board, currentC1Row, currentC1Col, currentC2Row, currentC2Col);
-  //  cout << " The second card you picked was " << currentC2Row << " " << currentC2Col << endl;
+
     cout << "Do you want to play again? (y/n): ";
     cin >> ans;
     waitTime = 0;
@@ -248,6 +244,28 @@ void wait(int seconds)
   endwait = clock() + seconds * CLOCKS_PER_SEC;
 
   while (clock() < endwait){}
+}
+
+bool takeTurn(char board[][COLS], int waitTime)
+{
+  bool foundMatch = false;
+  displayBoard(board);
+  pickFirstCard(board, currentC1Row, currentC1Col);
+  displayBoard(board, currentC1Row, currentC1Col);
+//  cout << "the first card you picked was: " << currentC1Row << " " << currentC1Col << endl;
+  pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
+  if(board[currentC1Row][currentC1Col] == board[currentC2Row][currentC2Col]) {
+    cout << "You found a match!!!" << endl;
+    board[currentC1Row][currentC1Col] = UNDERSCORE;
+    board[currentC2Row][currentC2Col] = UNDERSCORE;
+    foundMatch = true; 
+  } else {
+    cout << "Sorry, not a match... ";
+    displayBoard(board, currentC1Row, currentC1Col, currentC2Row, currentC2Col);
+    wait(waitTime);
+  }
+//  cout << " The second card you picked was " << currentC2Row << " " << currentC2Col << endl;
+  return foundMatch;
 }
 
 void goodbye()
