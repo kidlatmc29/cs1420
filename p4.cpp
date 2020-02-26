@@ -40,7 +40,6 @@ const string BOARD_B = "/home/fac/sreeder/class/cs1420/p4data2.dat";
 const int INVALID = -1;
 const int WIN = 6;
 const int SCREEN_HEIGHT = 40;
-const int BOARD_CLEARED = 12;
 
 void welcome();
 
@@ -139,7 +138,7 @@ bool createBoard(char board[][COLS])
   {
     ifstream inFile;
     string fileName;
-    int randNum = rand() % ((20 - 10) + 1) + 10;
+    int randNum = rand() % ((2 - 1) + 1) + 1;
     if((randNum % 2) == 0) { // file is chosen based on even or odd rand num
       fileName = BOARD_A;
     } else {
@@ -283,6 +282,10 @@ int takeTurn(char board[][COLS], int waitTime)
     wait(waitTime);
   }
   return match;
+}
+
+void clearScreen(){
+  
 }
 
 void goodbye()
