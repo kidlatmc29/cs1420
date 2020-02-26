@@ -70,8 +70,8 @@ int main()
 
   int currentC1Row = INVALID;
   int currentC1Col = INVALID;
-  //int currentC2Row = -1;
-  //int currentC2Col = -1;
+  int currentC2Row = -1;
+  int currentC2Col = -1;
 
   welcome();
   while(tolower(ans) == YES) {
@@ -191,7 +191,7 @@ void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
       cin >> cardCol;
     }
 
-    if(board[c1Row][c1Col] == UNDERSCORE) {
+    if(board[c1row][c1col] == UNDERSCORE) {
       cout << "Card Out Of Play! Please Pick Again...";
       cardRow = INVALID;
       cardCol = INVALID;
