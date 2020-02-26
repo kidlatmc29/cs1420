@@ -22,8 +22,8 @@
 
 using namespace std;
 
-const int BEGINNER_TIME = 10;
-const int EXPERT_TIME = 5;
+const int BEGINNER_TIME = 5;
+const int EXPERT_TIME = 2;
 const char EXPERT = 'e';
 const char BEGINNER = 'b';
 const char YES = 'y';
@@ -38,6 +38,7 @@ const int COL_LABEL = 4;
 const string BOARD_A = "/home/fac/sreeder/class/cs1420/p4data1.dat";
 const string BOARD_B = "/home/fac/sreeder/class/cs1420/p4data2.dat";
 const int INVALID = -1;
+const int WIN = 6;
 const int SCREEN_HEIGHT = 40;
 const int BOARD_CLEARED = 12;
 
@@ -65,8 +66,9 @@ void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
 void wait(int seconds);
 // pauses the program for x seconds based on difficulty
 
-void takeTurn(char board[][ROWS], int waitTime);
-// asks for cards to pick and checks if there is a match or not
+int takeTurn(char board[][COLS], int waitTime);
+// returns 1 if there is a match that turn
+// otherwise returns 0
 
 void goodbye();
 
@@ -76,26 +78,31 @@ int main()
   int waitTime; // stores the wait time in seconds based on difficulty
   bool noError = false; // tracks if file was read properly
   char board[ROWS][COLS]; //char array for the board of cards
-
-  int currentC1Row = INVALID;
-  int currentC1Col = INVALID;
-  int currentC2Row = INVALID;
-  int currentC2Col = INVALID;
+  int matchedPairs;
+  int turns; // tracks turns taken to win
 
   welcome();
+
   while(tolower(ans) == YES) {
     waitTime = getDifficulty();
+    turns = 0;
+    matchedPairs = 0;
     cout << "Your wait time is: " << waitTime << endl;
     noError = createBoard(board);
       if(!noError) {
         ans = 'n';
         cout << "Error with file! Quitting program...." << endl;
       }
-
+    while(WIN != matchedPairs) {
+      matchedPairs += takeTurn(board, waitTime);
+      turns++;
+    }
+    cout << "You matched all the cards! You win!!!" << endl;
+    cout << "Your score is: " << turns << endl;
     cout << "Do you want to play again? (y/n): ";
     cin >> ans;
-    waitTime = 0;
   }
+
   goodbye();
   return 0;
 }
@@ -169,13 +176,17 @@ void displayBoard(char board[][COLS], int c1row, int c1col, int c2row,
     cout << row << SPACE;
     for(int col = 0; col < COLS; col++) {
       cout << LEFT_BRACKET;
+
       if(row == c1row && col == c1col) {
         cout << board[c1row][c1col];
       } else if (row == c2row && col == c2col) {
         cout << board[c2row][c2col];
+      } else if(board[row][col] == UNDERSCORE){
+        cout << board[row][col];
       } else {
-        cout << ASTERISK;
+          cout << ASTERISK;
       }
+
       cout << RIGHT_BRACKET << SPACE;
     }
       cout << endl;
@@ -246,26 +257,32 @@ void wait(int seconds)
   while (clock() < endwait){}
 }
 
-bool takeTurn(char board[][COLS], int waitTime)
+int takeTurn(char board[][COLS], int waitTime)
 {
-  bool foundMatch = false;
+  int currentC1Row = INVALID;
+  int currentC1Col = INVALID;
+  int currentC2Row = INVALID;
+  int currentC2Col = INVALID;
+  int match;
+
   displayBoard(board);
   pickFirstCard(board, currentC1Row, currentC1Col);
   displayBoard(board, currentC1Row, currentC1Col);
-//  cout << "the first card you picked was: " << currentC1Row << " " << currentC1Col << endl;
+
   pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
   if(board[currentC1Row][currentC1Col] == board[currentC2Row][currentC2Col]) {
+    match = 1;
     cout << "You found a match!!!" << endl;
     board[currentC1Row][currentC1Col] = UNDERSCORE;
     board[currentC2Row][currentC2Col] = UNDERSCORE;
-    foundMatch = true; 
   } else {
+    match = 0;
+    displayBoard(board, currentC1Row, currentC1Col,
+                currentC2Row, currentC2Col);
     cout << "Sorry, not a match... ";
-    displayBoard(board, currentC1Row, currentC1Col, currentC2Row, currentC2Col);
     wait(waitTime);
   }
-//  cout << " The second card you picked was " << currentC2Row << " " << currentC2Col << endl;
-  return foundMatch;
+  return match;
 }
 
 void goodbye()
