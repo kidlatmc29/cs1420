@@ -37,6 +37,7 @@ const char UNDERSCORE = '_';
 const int COL_LABEL = 4;
 const string BOARD_A = "/home/fac/sreeder/class/cs1420/p4data1.dat";
 const string BOARD_B = "/home/fac/sreeder/class/cs1420/p4data2.dat";
+const int INVALID = -1;
 const int BOARD_CLEARED = 12;
 
 void welcome();
@@ -52,6 +53,11 @@ void displayBoard(char board[][COLS], int c1row = -1, int c1col = -1,
 // with one card flipped over and with both cards flipped over
 
 void pickFirstCard(char board[][COLS], int& c1row, int& c1col);
+// user is asked to pick the first card to turn over
+
+void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
+                    int& c2col);
+// user is asked to pick a second card to turn over
 
 void goodbye();
 
@@ -62,8 +68,8 @@ int main()
   bool noError = false; // tracks if file was read properly
   char board[ROWS][COLS]; //char array for the board of cards
 
-  int currentC1Row = -1;
-  int currentC1Col = -1;
+  int currentC1Row = INVALID;
+  int currentC1Col = INVALID;
   //int currentC2Row = -1;
   //int currentC2Col = -1;
 
@@ -78,7 +84,9 @@ int main()
       }
     displayBoard(board);
     pickFirstCard(board, currentC1Row, currentC1Col);
-    cout << "the card you picked was: " << currentC1Row << " " << currentC1Col << endl;
+    cout << "the first card you picked was: " << currentC1Row << " " << currentC1Col << endl;
+    pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
+    cout << " The second card you picked was " << currentC2Row << currentC2Col << endl;
     cout << "Do you want to play again? (y/n): ";
     cin >> ans;
     waitTime = 0;
@@ -141,7 +149,7 @@ bool createBoard(char board[][COLS])
 }
 
 void displayBoard(char board[][COLS], int c1row, int c1col, int c2row,
-                 int c2col)
+                  int c2col)
 {
   for(int i = 0; i < COLS; i++) {
     cout << setw(COL_LABEL) << i;
@@ -167,10 +175,10 @@ void displayBoard(char board[][COLS], int c1row, int c1col, int c2row,
 
 void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
 {
-  int cardRow = -1;
-  int cardCol =  -1;
+  int cardRow = INVALID;
+  int cardCol = INVALID;
 
-  while(cardRow == -1 && cardCol == -1) {
+  while(cardRow == INVALID && cardCol == INVALID) {
     while (cardRow < 0 || cardRow > ROWS - 1) {
       cout << "Row? ";
       cin >> cardRow;
@@ -185,11 +193,42 @@ void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
 
     if(board[c1Row][c1Col] == UNDERSCORE) {
       cout << "Card Out Of Play! Please Pick Again...";
-      cardRow = -1;
-      cardCol = -1;
+      cardRow = INVALID;
+      cardCol = INVALID;
     }
   }
     c1col = cardCol;
+}
+
+void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
+                    int& c2col)
+{
+  int cardRow = INVALID;
+  int cardCol = INVALID;
+
+  while(cardRow == INVALID && cardCol == INVALID) {
+    while (cardRow < 0 || cardRow > ROWS - 1) {
+      cout << "Row? ";
+      cin >> cardRow;
+    }
+
+      c1row = cardRow;
+
+    while (cardCol < 0 || cardCol > COLS - 1) {
+      cout << "Col? ";
+      cin >> cardCol;
+    }
+        if(board[c2Row][c2Col] == UNDERSCORE) {
+          cout << "Card Out Of Play! Please Pick Again...";
+          cardRow = INVALID;
+          cardCol = INVALID;
+        } else if (cardRow == c1Row && cardCol == c1Col) {
+          cout << "Already Picked This Card! Please Pick Again...";
+        } else {
+        c1col = cardCol;
+      }
+    }
+  }
 }
 
 void goodbye()
