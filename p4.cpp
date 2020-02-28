@@ -69,6 +69,9 @@ int takeTurn(char board[][COLS], int waitTime);
 // returns 1 if there is a match that turn
 // otherwise returns 0
 
+void clearScreen();
+// clears the screen
+
 void goodbye();
 
 int main()
@@ -162,10 +165,6 @@ bool createBoard(char board[][COLS])
 void displayBoard(char board[][COLS], int c1row, int c1col, int c2row,
                   int c2col)
 {
-  for(int line = 0; line <= SCREEN_HEIGHT; line++){
-    cout << endl;
-  }
-
   for(int i = 0; i < COLS; i++) {
     cout << setw(COL_LABEL) << i;
   }
@@ -194,6 +193,8 @@ void displayBoard(char board[][COLS], int c1row, int c1col, int c2row,
 
 void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
 {
+
+  cout << "First card: " << endl;
   int cardRow = INVALID;
   int cardCol = INVALID;
 
@@ -210,18 +211,20 @@ void pickFirstCard(char board[][COLS], int& c1row, int& c1col)
       cin >> cardCol;
     }
 
+    c1col = cardCol;
+
     if(board[c1row][c1col] == UNDERSCORE) {
-      cout << "Card Out Of Play! Please Pick Again...";
+      cout << "Card Out Of Play! Please Pick Again..." << endl;
       cardRow = INVALID;
       cardCol = INVALID;
     }
   }
-    c1col = cardCol;
 }
 
 void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
                     int& c2col)
 {
+  cout << "Second card: " << endl;
   int cardRow = INVALID;
   int cardCol = INVALID;
 
@@ -238,10 +241,17 @@ void pickSecondCard(char board[][COLS], int c1row, int c1col, int& c2row,
     c2col = cardCol;
     if(board[c2row][c2col] == UNDERSCORE) {
       cout << "Card Out Of Play! Please Pick Again..." << endl;
+      cin.ignore();
+      cout << "Press enter to continue....";
+      cin.get();
       cardRow = INVALID;
       cardCol = INVALID;
-    } else if(cardRow == c1row && cardCol == c1col) {
+    } else if (cardRow == c1row && cardCol == c1col) {
       cout << "Already Picked This Card! Please Pick Again..." << endl;
+      cin.ignore();
+      cout << "Press enter to continue....";
+      cin.get();
+      cout << endl;
       cardRow = INVALID;
       cardCol = INVALID;
     }
@@ -264,28 +274,39 @@ int takeTurn(char board[][COLS], int waitTime)
   int currentC2Col = INVALID;
   int match;
 
+  clearScreen();
   displayBoard(board);
   pickFirstCard(board, currentC1Row, currentC1Col);
+  clearScreen();
   displayBoard(board, currentC1Row, currentC1Col);
-
+  clearScreen();
   pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
+
   if(board[currentC1Row][currentC1Col] == board[currentC2Row][currentC2Col]) {
     match = 1;
-    cout << "You found a match!!!" << endl;
     board[currentC1Row][currentC1Col] = UNDERSCORE;
     board[currentC2Row][currentC2Col] = UNDERSCORE;
+    clearScreen();
+    displayBoard(board);
+    cout << "You found a match!!!" << endl << endl;
+    cin.ignore();
+    cout << "Press enter to continue....";
+    cin.get();
   } else {
     match = 0;
+    clearScreen();
     displayBoard(board, currentC1Row, currentC1Col,
                 currentC2Row, currentC2Col);
-    cout << "Sorry, not a match... ";
+    cout << "Sorry, not a match... " << endl << endl;
     wait(waitTime);
   }
   return match;
 }
 
 void clearScreen(){
-  
+  for(int line = 0; line <= SCREEN_HEIGHT; line++){
+    cout << endl;
+  }
 }
 
 void goodbye()
