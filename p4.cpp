@@ -46,7 +46,7 @@ void welcome();
 int getDifficulty();
 // returns the wait time based on the player's difficulty
 
-bool createBoard(char board[][COLS]);
+bool createBoard(char board[][COLS], bool switchBoard);
 // returns true if a char array is sucessfuly made from reading a file
 // returns false otherwise
 
@@ -82,6 +82,7 @@ int main()
   char board[ROWS][COLS]; //char array for the board of cards
   int matchedPairs;
   int turns; // tracks turns taken to win
+  bool switchBoard = false; // switches the board being used for a game
 
   welcome();
 
@@ -89,8 +90,7 @@ int main()
     waitTime = getDifficulty();
     turns = 0;
     matchedPairs = 0;
-    cout << "Your wait time is: " << waitTime << endl;
-    noError = createBoard(board);
+    noError = createBoard(board, switchBoard);
       if(!noError) {
         ans = 'n';
         cout << "Error with file! Quitting program...." << endl;
@@ -99,10 +99,15 @@ int main()
       matchedPairs += takeTurn(board, waitTime);
       turns++;
     }
-    cout << "You matched all the cards! You win!!!" << endl;
+    cout << endl << "You matched all the cards! You win!!!" << endl;
+    if(turns == WIN) {
+      cout << "You had a perfect game! Your score is: " << turns << endl;
+    }
     cout << "Your score is: " << turns << endl;
     cout << "Do you want to play again? (y/n): ";
     cin >> ans;
+    switchBoard = true;
+    cout << endl << endl;
   }
 
   goodbye();
@@ -137,12 +142,12 @@ int getDifficulty()
   return time;
 }
 
-bool createBoard(char board[][COLS])
+bool createBoard(char board[][COLS], bool switchBoard)
   {
     ifstream inFile;
     string fileName;
-    int randNum = rand() % ((2 - 1) + 1) + 1;
-    if((randNum % 2) == 0) { // file is chosen based on even or odd rand num
+
+    if(!switchBoard) {
       fileName = BOARD_A;
     } else {
       fileName = BOARD_B;
@@ -279,7 +284,6 @@ int takeTurn(char board[][COLS], int waitTime)
   pickFirstCard(board, currentC1Row, currentC1Col);
   clearScreen();
   displayBoard(board, currentC1Row, currentC1Col);
-  clearScreen();
   pickSecondCard(board,currentC1Row, currentC1Col, currentC2Row, currentC2Col);
 
   if(board[currentC1Row][currentC1Col] == board[currentC2Row][currentC2Col]) {
@@ -311,6 +315,5 @@ void clearScreen(){
 
 void goodbye()
 {
-  cout << endl << endl;
   cout << "Thanks for playing! Goodbye...." << endl << endl;
 }
