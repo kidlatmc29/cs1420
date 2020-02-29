@@ -65,7 +65,11 @@ bool readFile(Part parts[], int& numOfElements)
 {
   ifstream inFile;
   string fileName;
-  string current;
+  string currentName;
+  string currentManufacturer;
+  int currentQuantity;
+  int currentMininum;
+  double currentUnitPrice;
 
   cout << "Please enter an input file name: ";
   cin >> fileName;
@@ -76,14 +80,20 @@ bool readFile(Part parts[], int& numOfElements)
   }
 
   cout << "Reading from " << fileName << endl;
-  while(inFile >> current) {
+  while(inFile >> currentName) {
+    cout << "Inside the while loop???" << endl;
     struct Part newPart;
     parts[numOfElements] = newPart;
-    cin >> parts[numOfElements].name;
-    cin >> parts[numOfElements].manufacturer;
-    cin >> parts[numOfElements].quantity;
-    cin >> parts[numOfElements].mininum;
-    cin >> parts[numOfElements].unitPrice;
+    cin >> currentName;
+    parts[numOfElements].name = currentName;
+    cin >> currentManufacturer;
+    parts[numOfElements].manufacturer = currentManufacturer;
+    cin >> currentQuantity;
+    parts[numOfElements].quantity = currentQuantity;
+    cin >> currentMininum;
+    parts[numOfElements].mininum = currentMininum;
+    cin >> currentUnitPrice;
+    parts[numOfElements].unitPrice = currentUnitPrice;
     numOfElements++;
   }
 
