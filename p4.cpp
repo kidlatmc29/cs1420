@@ -11,8 +11,13 @@
 // the cards and determine if the two cards are a match, either removing
 // the matched pair from play or waiting so the player can look at the cards.
 //
-// Output:
-// Example:
+// Output: The main output will be a 3 x 4 deck of cards that can be "face
+// down" (with astricks) or "face up" (with chars).
+//
+// Example: The board is then displayed with astricks. Row? '1' Col? '2'.
+// The board is then displays that card face up at the given coordinates.
+// Row? '1' Col? '2' Already Picked This Card! Please Pick Again... 
+
 
 #include <iostream>
 #include <fstream>
