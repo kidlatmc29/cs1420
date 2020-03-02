@@ -4,13 +4,21 @@
 
 // Purpose: This program serves as an inventory for the store
 //
-// Input:
+// Input: The user gives the name of a file that contains data on electronic
+// items. From the file given, its contents is stored into an array of parts.
+// The user chooses from a menu 0 - 2 on what they'd like the program to do.
 //
-// Processing:
+// Processing: When given the file name, the program creates a new Part struct
+// and stores all of them into an array of Parts.
 //
-// Output:
+// Output: If the user asks for an inventory report, then a table of all the
+// electronic parts with its name, manufacturer, current quantity, mininum
+// quantity as well as its unit price is printed. Additional data including,
+// total number of parts and total cost is printed at the end. The other o
 //
-// Example:
+//
+// Example: The user enter the file name 'p5data.dat'. A menu appears and
+// the user enters '1' which is to print out an entire inventory report.
 
 #include<iostream>
 #include <fstream>
@@ -32,21 +40,33 @@ const int MAX_PARTS = 150;
 void welcome();
 
 int readFile(Part Parts[], int maxParts);
+// returns the number of parts stored in the array
+// returns 0 if the file failed to open
+// When reading from the file, assume if there is a name, the
 
-void printParts(const Part Parts[], int& numOfElements);
+void printParts(const Part Parts[], int numOfElements);
+// only here for debugging purposes!!!! remove when submitting
+// displays the array of Parts
+
+void selectionSort(Part Parts[], int numOfElements);
+// sorts all the parts in the given array by name, alphabetically
+
+void swap(Part Parts[], int index);
+// swaps the
 
 void goodbye();
 
 int main()
 {
   Part parts[MAX_PARTS];
-  int numOfElements; // tacks num of parts in Parts[]
+  int numOfElements; // total num of parts in Parts[]
 
   welcome();
   numOfElements = readFile(parts, MAX_PARTS);
 
+  while(numOfElements > 0) {
   printParts(parts, numOfElements);
-
+  }
 
   goodbye();
   return 0;
@@ -55,7 +75,7 @@ int main()
 void welcome()
 {
   cout << endl << endl;
-  cout << " - Welcome to Everything Electronic! Inventory System - ";
+  cout << " - Welcome to Everything Electronic!'s Inventory System - ";
   cout << endl;
 }
 
@@ -70,30 +90,41 @@ int readFile(Part parts[], int maxParts)
 
   inFile.open(fileName);
 
-  if(inFile.fail()) {
-    return false;
+  if(!inFile.fail()) {
+    while(count < maxParts && inFile >> parts[count].name) {
+      inFile >> parts[count].manufacturer;
+      inFile >> parts[count].quantity;
+      inFile >> parts[count].mininum;
+      inFile >> parts[count].unitPrice;
+      count++;
+    } else {
+    count = 0;
+    }
   }
-
-  cout << "Reading from " << fileName << endl;
-  while(count < maxParts && inFile >> parts[count].name) {
-    inFile >> parts[count].manufacturer;
-    inFile >> parts[count].quantity;
-    inFile >> parts[count].mininum;
-    inFile >> parts[count].unitPrice;
-    count++;
-  }
-
-  cout << "There were " << count << " parts in this file." << endl;
   inFile.close();
   return count;
 }
 
-void printParts(const Part parts[], int& numOfElements)
+void printParts(const Part parts[], int numOfElements)
 {
   cout << "Printing array of Parts: " << endl;
   for(int index = 0; index <= numOfElements; index++) {
     cout << parts[index].name << endl;
   }
+}
+
+void selectionSort(Part parts[], int numOfElements)
+{
+  for(int index = 0; index < numOfElements - 1; index++){
+    if(parts[index] > parts[index++]) {
+      swap(index);
+    }
+  }
+}
+
+void swap(Part parts[], int index)
+{
+  struct temp = parts[index];
 }
 
 void goodbye()

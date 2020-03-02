@@ -29,7 +29,6 @@ int main()
   cout << "Attempting to read in from " << FILE_NAME <<  "......" << endl;
 
   inFile.open(FILE_NAME);
-  cout << "file opened" << endl;
   if(inFile.fail()){
     cout << FILE_NAME << " could not be read! Quiting.....";
       fileOpened = false;
@@ -37,7 +36,6 @@ int main()
 
   while(tolower(searchAgain) == YES && fileOpened) {
     while(inFile >> val) {
-      cout << val << endl;
       words[numOfElements] = val;
       numOfElements++;
     }
@@ -48,13 +46,14 @@ int main()
     index = findString(words, target, numOfElements);
 
     if(index < 0) {
-      cout << "Word not found!" << endl;
+      cout << "Word not found!" << endl << endl;
     } else {
       cout << "Word found at index " << index << endl << endl;
     }
 
     cout << "Do you want to search again? (y/n): ";
     cin >> searchAgain;
+    cout << endl << endl;
   }
   return 0;
 }
@@ -62,7 +61,7 @@ int main()
 int findString(string list[], string target , int numOfElements)
 {
   int index = 0;
-  while(index < numOfElements && list[index] != target){
+  while(index < numOfElements && list[index] != target) {
     index++;
   }
   if(list[index] == target)
