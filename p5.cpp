@@ -31,7 +31,7 @@ const int MAX_PARTS = 150;
 
 void welcome();
 
-bool readFile(Part Parts[], int& numOfElements);
+int readFile(Part Parts[], int maxParts);
 
 void printParts(const Part Parts[], int& numOfElements);
 
@@ -41,14 +41,12 @@ int main()
 {
   Part parts[MAX_PARTS];
   int numOfElements; // tacks num of parts in Parts[]
-  bool ok = true; // checks for if file reading is sucessfuly
 
   welcome();
-  ok = readFile(parts, numOfElements);
+  numOfElements = readFile(parts, MAX_PARTS);
 
-  while(ok) {
-    printParts(parts, numOfElements);
-  }
+  printParts(parts, numOfElements);
+
 
   goodbye();
   return 0;
@@ -57,48 +55,37 @@ int main()
 void welcome()
 {
   cout << endl << endl;
-  cout << " - Welcome to Everythin Electronic! Inventory System - ";
+  cout << " - Welcome to Everything Electronic! Inventory System - ";
   cout << endl;
 }
 
-bool readFile(Part parts[], int& numOfElements)
+int readFile(Part parts[], int maxParts)
 {
   ifstream inFile;
   string fileName;
-  string currentName;
-  string currentManufacturer;
-  int currentQuantity;
-  int currentMininum;
-  double currentUnitPrice;
+  int count = 0;
 
   cout << "Please enter an input file name: ";
   cin >> fileName;
 
   inFile.open(fileName);
+
   if(inFile.fail()) {
     return false;
   }
 
   cout << "Reading from " << fileName << endl;
-  while(inFile >> currentName) {
-    struct Part newPart;
-    cin >> currentName;
-    parts[numOfElements].name = currentName;
-    cin >> currentManufacturer;
-    parts[numOfElements].manufacturer = currentManufacturer;
-    cin >> currentQuantity;
-    parts[numOfElements].quantity = currentQuantity;
-    cin >> currentMininum;
-    parts[numOfElements].mininum = currentMininum;
-    cin >> currentUnitPrice;
-    parts[numOfElements].unitPrice = currentUnitPrice;
-      parts[numOfElements] = newPart;
-    numOfElements++;
+  while(count < maxParts && inFile >> parts[count].name) {
+    inFile >> parts[count].manufacturer;
+    inFile >> parts[count].quantity;
+    inFile >> parts[count].mininum;
+    inFile >> parts[count].unitPrice;
+    count++;
   }
 
-  cout << "There were " << numOfElements << " parts in this file." << endl;
+  cout << "There were " << count << " parts in this file." << endl;
   inFile.close();
-  return true;
+  return count;
 }
 
 void printParts(const Part parts[], int& numOfElements)
