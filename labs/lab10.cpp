@@ -31,7 +31,7 @@ int main()
   cout << endl << endl;
 
   while (numOfElements  < 1 || numOfElements > MAX) {
-  cout << "How many elements should be filled? ";
+  cout << "How many elements should be filled? (No more than 20): ";
   cin >> numOfElements;
   }
 
@@ -41,7 +41,7 @@ int main()
 
   printList(arr, numOfElements);
 
-  cout << endl;
+  cout << endl << endl;
 
   cout << "Sorted Array: " << endl;
   selectionSort(arr, numOfElements);
