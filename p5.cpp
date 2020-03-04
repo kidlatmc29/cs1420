@@ -51,8 +51,8 @@ void printParts(const Part Parts[], int numOfElements);
 void selectionSort(Part Parts[], int numOfElements);
 // sorts all the parts in the given array by name, alphabetically
 
-void swap(Part Parts[], int index);
-// swaps the
+void swap(Part Parts[], int index, int indexSwap);
+// swaps the two values of an array at the given indices
 
 void goodbye();
 
@@ -115,16 +115,20 @@ void printParts(const Part parts[], int numOfElements)
 
 void selectionSort(Part parts[], int numOfElements)
 {
-  for(int index = 0; index < numOfElements - 1; index++){
-    if(parts[index] > parts[index++]) {
-      swap(index);
+  for(int index = 0; index < numOfElements - 1; index++) {
+    for(int j = index + 1; j < numOfElements; j++) {
+      if(parts[index] > parts[j]) {
+        swap(parts, index, j);
+      }
     }
   }
 }
 
-void swap(Part parts[], int index)
+void swap(Part parts[], int index, int indexSwap)
 {
   struct temp = parts[index];
+  parts[index] = indexSwap;
+  parts[indexSwap] = temp;
 }
 
 void goodbye()
