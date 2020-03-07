@@ -36,6 +36,10 @@ struct Part
 };
 
 const int MAX_PARTS = 150;
+const int COL = 13;
+const char QUIT = 'q';
+const char RESTOCK = 'r';
+const char INVENTORY = 'i';
 
 void welcome();
 
@@ -60,6 +64,7 @@ int main()
 {
   Part parts[MAX_PARTS];
   int numOfElements; // total num of parts in Parts[]
+  char menuChoice;
 
   welcome();
   numOfElements = readFile(parts, MAX_PARTS);
@@ -71,6 +76,15 @@ int main()
   selectionSort(parts, numOfElements);
   printParts(parts, numOfElements);
   }
+
+  while(menuChoice != QUIT && menuChoice != INVENTORY
+        && menuChoice != RESTOCK) {
+  cout << "Please enter a menu choice: ";
+  cin >> menuChoice;
+  }
+
+  while(menuChoice)
+  // add switch statement for menu here
 
   goodbye();
   return 0;
@@ -112,8 +126,13 @@ int readFile(Part parts[], int maxParts)
 void printParts(const Part parts[], int numOfElements)
 {
   cout << "Printing array of Parts: " << endl;
-  for(int index = 0; index <= numOfElements; index++) {
-    cout << parts[index].name << endl;
+  for(int index = 0; index < numOfElements; index++) {
+    cout << setw(COL) << parts[index].name
+         << setw(COL) << parts[index].manufacturer
+         << setw(COL) << parts[index].quantity
+         << setw(COL) << parts[index].mininum
+         << "$" << setw(COL) << parts[index].unitPrice
+         << endl;
   }
 }
 

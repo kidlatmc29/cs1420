@@ -63,6 +63,7 @@ void printList(const int arr[], int numOfElements)
 }
 
 void selectionSort(int arr[], int numOfElements)
+//FIX THIS SELECTION SORT TO BE CORRECT
 {
   for(int index = 0; index < numOfElements - 1; index++) {
     for(int j = index + 1; j < numOfElements; j++) {
