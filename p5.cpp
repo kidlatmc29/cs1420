@@ -58,6 +58,9 @@ void selectionSort(Part Parts[], int numOfElements);
 void swap(Part Parts[], int index, int indexSwap);
 // swaps the two values of an array at the given indices
 
+char getMenuChoice();
+// asks user for 1 of 3 menu choices
+
 void goodbye();
 
 int main()
@@ -80,26 +83,27 @@ int main()
   while(menuChoice != QUIT) {
     while(menuChoice != QUIT && menuChoice != INVENTORY
           && menuChoice != RESTOCK) {
-          cout << "Please select a menu choice: ";
-    cin >> menuChoice;
+        menuChoice = getMenuChoice();
     }
 
+    cout << "menue choice is " << menuChoice << endl;
     switch(menuChoice)
     {
       case INVENTORY :
       {
-
+        cout << "going to print out an inventory" << endl;
+        menuChoice = getMenuChoice();
+        break;
       }
       case RESTOCK :
       {
-
-      } case QUIT :
-      {
-          goodbye();
-          break;
+        cout << "going to print out a restock report" << endl;
+        menuChoice =  getMenuChoice();
+        break;
       }
     }
   }
+  goodbye();
   return 0;
 }
 
@@ -165,6 +169,20 @@ void swap(Part parts[], int index, int indexSwap)
   Part temp = parts[index];
   parts[index] = parts[indexSwap];
   parts[indexSwap] = temp;
+}
+
+char getMenuChoice()
+{
+  char choice;
+  cout << endl;
+  cout << "MAIN MENU:" << endl;
+  cout << "  " << INVENTORY << " - [Inventory Report]" << endl;
+  cout << "  " << RESTOCK << " - [Restock Report]" << endl;
+  cout << "  " << QUIT << " - [Quit] " << endl;
+  cout << endl;
+  cout << "Please select a menu choice: ";
+  cin >> choice;
+  return choice;
 }
 
 void goodbye()
