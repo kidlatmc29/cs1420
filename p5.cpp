@@ -85,7 +85,7 @@ int main()
     while(menuChoice != QUIT && menuChoice != INVENTORY
           && menuChoice != RESTOCK) {
 
-            
+
         menuChoice = getMenuChoice();
     }
 
@@ -159,11 +159,13 @@ void printParts(const Part parts[], int numOfElements)
 void selectionSort(Part parts[], int numOfElements)
 {
   for(int index = 0; index < numOfElements - 1; index++) {
+    int i = index;
     for(int j = index + 1; j < numOfElements; j++) {
       if(parts[index].name > parts[j].name) {
-        swap(parts, index, j);
+        i = j;
       }
     }
+    swap(parts, index, i);
   }
 }
 
