@@ -71,13 +71,22 @@ void selectionSort()
 
 int findOldest(CoffeeDrinkers list[], int numOfElements)
 {
-   //
+   // linear search that finds the oldest person
+   int index = 0;
+   int oldest = 0;
+   while(index < numOfElements) {
+     if(list[index + 1].age > list[index].age) {
+       oldest = index + 1;
+     }
+     index++
+   }
     return -1;
 }
 
 int findLeastCoffee(CoffeeDrinker)
 {
-
+  // linear search that finds the person who drinks the least coffee
+  return -1;
 }
 
 void swap(CoffeeDrinkers list[], int index, int indexSwap)
