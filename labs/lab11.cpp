@@ -17,11 +17,17 @@ struct CoffeeDrinker
 const int MAX = 150;
 const string FILENAME = "/home/fac/sreeder/class/cs1420/lab11input.dat";
 
-int readFile();
+int readFile(CoffeeDrinker list[]);
 // returns the number of CoffeDrinkers stored in the file
 
-void swap();
-// swap
+void swap(CoffeeDrinker list[], int index, int indexSwap);
+// swaps
+
+int findOldest(CoffeeDrinkers list[], int numOfElements)
+// linear search that finds the oldest person
+
+int findLeastCoffee(CoffeeDrinker list[], int numOfElements);
+// linear search that finds the person who drinks the least coffee
 
 int main()
 {
@@ -29,6 +35,7 @@ int main()
   int numOfElements;
 
   numOfElements = readFile(list);
+
 
   return 0;
 }
@@ -71,7 +78,6 @@ void selectionSort()
 
 int findOldest(CoffeeDrinkers list[], int numOfElements)
 {
-   // linear search that finds the oldest person
    int index = 0;
    int oldest = 0;
    while(index < numOfElements) {
@@ -80,13 +86,20 @@ int findOldest(CoffeeDrinkers list[], int numOfElements)
      }
      index++
    }
-    return -1;
+    return index;
 }
 
-int findLeastCoffee(CoffeeDrinker)
+int findLeastCoffee(CoffeeDrinker list[], int numOfElements)
 {
-  // linear search that finds the person who drinks the least coffee
-  return -1;
+  int index = 0;
+  int oldest = 0;
+  while(index < numOfElements) {
+    if(list[index + 1].coffee < list[index].coffee) {
+      oldest = index + 1;
+    }
+    index++
+  }
+  return index;
 }
 
 void swap(CoffeeDrinkers list[], int index, int indexSwap)
