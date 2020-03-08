@@ -77,16 +77,29 @@ int main()
   printParts(parts, numOfElements);
   }
 
-  while(menuChoice != QUIT && menuChoice != INVENTORY
-        && menuChoice != RESTOCK) {
-  cout << "Please enter a menu choice: ";
-  cin >> menuChoice;
+  while(menuChoice != QUIT) {
+    while(menuChoice != QUIT && menuChoice != INVENTORY
+          && menuChoice != RESTOCK) {
+          cout << "Please select a menu choice: ";
+    cin >> menuChoice;
+    }
+
+    switch(menuChoice)
+    {
+      case INVENTORY :
+      {
+
+      }
+      case RESTOCK :
+      {
+
+      } case QUIT :
+      {
+          goodbye();
+          break;
+      }
+    }
   }
-
-  while(menuChoice)
-  // add switch statement for menu here
-
-  goodbye();
   return 0;
 }
 
