@@ -81,8 +81,11 @@ int main()
   }
 
   while(menuChoice != QUIT) {
+
     while(menuChoice != QUIT && menuChoice != INVENTORY
           && menuChoice != RESTOCK) {
+
+            
         menuChoice = getMenuChoice();
     }
 
