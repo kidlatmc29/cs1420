@@ -46,7 +46,7 @@ const int QUA_COL = 10;
 const int COST_COL = 7;
 const int VAL_COL = 5;
 const int SCREEN_HEIGHT = 25;
-const int SCREEN_WITH = 80;
+const int SCREEN_WIDTH = 80;
 const char SPACE = ' ';
 const char DOLLAR = '$';
 const string DSPACE = "   ";
@@ -207,7 +207,9 @@ void printInventory(Part parts[], int numOfElements)
   int totalQuant = 0;
   double totalVal = 0;
 
-  for(int spaces = 0; spaces < SCREEN_WIDTH - I_NUM_CHARS; spaces++) {
+  int titleSpaces = (SCREEN_WIDTH - I_NUM_CHARS) / 2;
+
+  for(int spaces = 0; spaces < titleSpaces; spaces++) {
     cout << SPACE;
   }
 
