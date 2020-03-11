@@ -48,6 +48,7 @@ const int VAL_COL = 10;
 const int SCREEN_HEIGHT = 25;
 const int SCREEN_WIDTH = 80;
 const char SPACE = ' ';
+const int PRECISION = 2;
 const char DOLLAR = '$';
 const string DSPACE = "   ";
 const string I_TITLE = "Inventory Report";
@@ -79,7 +80,7 @@ int readFile(Part parts[], int maxParts);
 void selectionSort(Part parts[], int numOfElements);
 // sorts all the parts in the given array by name, alphabetically
 
-void swap(Part parts[], int index, int indexSwap);
+void swapParts(Part parts[], int index, int indexSwap);
 // swaps the two values of an array at the given indices
 
 char getMenuChoice();
@@ -102,6 +103,7 @@ int main()
   int numOfElements; // total num of parts in Parts[]
   char menuChoice;
 
+  clearScreen();
   welcome();
   numOfElements = readFile(parts, MAX_PARTS);
 
@@ -178,18 +180,19 @@ int readFile(Part parts[], int maxParts)
 
 void selectionSort(Part parts[], int numOfElements)
 {
-  for(int index = 0; index < numOfElements - 1; index++) {
-      int i = index;
+  int indexSwap;
+  for(int index = 0; index < numOfElements; index++) {
+    indexSwap = index;
     for(int j = index + 1; j < numOfElements; j++) {
-      if(parts[index].name > parts[j].name) {
-        i = j;
+      if(parts[j].name < parts[indexSwap].name) {
+        indexSwap = j;
       }
     }
-    swap(parts, index, i);
+    swapParts(parts, index, indexSwap);
   }
 }
 
-void swap(Part parts[], int index, int indexSwap)
+void swapParts(Part parts[], int index, int indexSwap)
 {
   Part temp = parts[index];
   parts[index] = parts[indexSwap];
@@ -207,11 +210,16 @@ char getMenuChoice()
   cout << endl;
   cout << "Please select a menu choice: ";
   cin >> choice;
+  cin.clear();
   return choice;
 }
 
 void printInventory(Part parts[], int numOfElements)
 {
+  cout.setf(ios::fixed);
+  cout.setf(ios::showpoint);
+  cout.precision(PRECISION);
+
   int totalQuant = 0;
   double totalVal = 0;
 
@@ -229,13 +237,13 @@ void printInventory(Part parts[], int numOfElements)
 
   cout << endl;
 
-  cout << left << ITEM_HEADER << setw(ITEM_COL);
-  cout << MAN_HEADER << setw(MAN_COL);
-  cout << right << QUA_HEADER << setw(QUA_COL);
-  cout << COST_HEADER << setw(COST_COL);
-  cout << TOTAL_VAL_HEADER << setw(VAL_COL);
+  cout << left << setw(ITEM_COL) << ITEM_HEADER;
+  cout << setw(MAN_COL) << MAN_HEADER;
+  cout << setw(QUA_COL) << QUA_HEADER;
+  cout << setw(COST_COL) << COST_HEADER;
+  cout << setw(VAL_COL) << TOTAL_VAL_HEADER;
 
-  cout << endl;
+  cout << endl << endl;
 
   for(int i = 0; i < numOfElements; i++) {
     cout << left << setw(ITEM_COL) << parts[i].name
@@ -248,7 +256,7 @@ void printInventory(Part parts[], int numOfElements)
     totalQuant += parts[i].quantity;
     totalVal += parts[i].quantity * parts[i].unitPrice;
 
-    if(i > 0 && i % SCREEN_HEIGHT == 0) {
+    if(i > 0 && i == SCREEN_HEIGHT) {
       cout << endl << "Press enter to continue the report....";
       cin.get();
       cout << endl;
@@ -265,7 +273,11 @@ void printInventory(Part parts[], int numOfElements)
 
 void printReorder(Part parts[], int numOfElements)
 {
-  
+  cout.setf(ios::fixed);
+  cout.setf(ios::showpoint);
+  cout.precision(PRECISION);
+
+
 }
 
 void clearScreen()
