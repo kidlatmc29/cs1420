@@ -47,12 +47,12 @@ const int COST_COL = 7;
 const int VAL_COL = 5;
 const int SCREEN_HEIGHT = 25;
 const char DOLLAR = '$';
-const string DSPACE = "    ";
+const string DSPACE = "   ";
 const string I_TITLE = "Inventory Report";
 const string R_TITLE = "Reorder Report";
 const string ITEM_HEADER = "Item";
 const string MAN_HEADER = "Manufacturer";
-const string QUA_HEADER "Quantity";
+const string QUA_HEADER = "Quantity";
 const string COST_HEADER = "Cost each";
 const string TOTAL_VAL_HEADER = "Total Value";
 const string MIN_HEADER = "Mininum";
@@ -62,8 +62,8 @@ const string NUM_DIFF_ITEMS = "Numbers of different items: ";
 const string TOTAL_QUA = "Total quantity: ";
 const string TOTAL_VAL = "Total value of all items: ";
 const string DIFF_ITEMS = "Number of different items to order: ";
-const string TOTAL_NUM_REORDER = "Total number to reorder: "
-const string TOTAL_REORDER_COST = "Total cost:"
+const string TOTAL_NUM_REORDER = "Total number to reorder: ";
+const string TOTAL_REORDER_COST = "Total cost:";
 
 void welcome();
 
@@ -71,10 +71,6 @@ int readFile(Part parts[], int maxParts);
 // returns the number of parts stored in the array
 // returns 0 if the file failed to open
 // When reading from the file, assume if there is a name, the
-
-void printParts(const Part parts[], int numOfElements);
-// only here for debugging purposes!!!! remove when submitting
-// displays the array of Parts
 
 void selectionSort(Part parts[], int numOfElements);
 // sorts all the parts in the given array by name, alphabetically
@@ -99,15 +95,8 @@ int main()
   welcome();
   numOfElements = readFile(parts, MAX_PARTS);
 
-  if(numOfElements > 0) {
-  printParts(parts, numOfElements);
-  cout << endl << endl;
-  cout << "Sorted Parts: " << endl;
-  selectionSort(parts, numOfElements);
-  printParts(parts, numOfElements);
-  }
-
-  while(menuChoice != QUIT) {
+  while(menuChoice != QUIT && numOfElements > 0) {
+    selectionSort(parts, numOfElements);
 
     while(menuChoice != QUIT && menuChoice != INVENTORY
           && menuChoice != RESTOCK) {
@@ -119,6 +108,7 @@ int main()
       case INVENTORY :
       {
         cout << "going to print out an inventory" << endl;
+        printInventory(parts, numOfElements);
         menuChoice = getMenuChoice();
         break;
       }
@@ -130,6 +120,12 @@ int main()
       }
     }
   }
+
+  if(numOfElements < 1) {
+    cout << endl;
+    cout << "Error with input file!" << endl;
+  }
+
   goodbye();
   return 0;
 }
@@ -167,19 +163,6 @@ int readFile(Part parts[], int maxParts)
   return count;
 }
 
-void printParts(const Part parts[], int numOfElements)
-{
-  cout << "Printing array of Parts: " << endl;
-  for(int index = 0; index < numOfElements; index++) {
-    cout << setw(COL) << parts[index].name
-         << setw(COL) << parts[index].manufacturer
-         << setw(COL) << parts[index].quantity
-         << setw(COL) << parts[index].mininum
-         << DOLLAR << setw(COL) << parts[index].unitPrice
-         << endl;
-  }
-}
-
 void selectionSort(Part parts[], int numOfElements)
 {
   for(int index = 0; index < numOfElements - 1; index++) {
@@ -211,6 +194,7 @@ char getMenuChoice()
   cout << endl;
   cout << "Please select a menu choice: ";
   cin >> choice;
+  cin.clear();
   return choice;
 }
 
@@ -223,11 +207,11 @@ void printInventory(Part parts[], int numOfElements)
     cout << left << setw(ITEM_COL) << parts[i].name
          << setw(MAN_COL) << parts[i].manufacturer;
     cout << right << setw(QUA_COL) << parts[i].quantity
-         << DSPACE << DOLLAR << setw(COST_COL) << parts[i].cost;
-         << DSPACE << DOLLAR << setw(VAL_COL) <<
-         << parts[i].cost * parts[i].quantity << endl;
+         << DSPACE << DOLLAR << setw(COST_COL) << parts[i].unitPrice;
+    cout << DSPACE << DOLLAR << setw(VAL_COL)
+         << parts[i].unitPrice * parts[i].quantity << endl;
     totalQuant += parts[i].quantity;
-    totalVal += parts[i].quantity * parts[i].cost;
+    totalVal += parts[i].quantity * parts[i].unitPrice;
 
     if(i > 0 && i % SCREEN_HEIGHT == 0) {
       cout << endl << "Press enter to continue the report....";
@@ -237,11 +221,15 @@ void printInventory(Part parts[], int numOfElements)
   }
 
   cout << endl << endl;
-  cout << ""
+  cout << NUM_DIFF_ITEMS << numOfElements << endl;
+  cout << TOTAL_QUA << totalQuant << endl;
+  cout << TOTAL_VAL << DOLLAR << totalVal << endl << endl;
+  cout << "Press enter to continue....";
+  cin.get();
 }
 
 void goodbye()
 {
-  cout << "Exiting program. Goodbye....";
-  cout << endl << endl;
+  cout << "Exiting program. Thank you! Goodbye....";
+  cout << endl << endl << endl;
 }
