@@ -44,7 +44,7 @@ const int ITEM_COL = 15;
 const int MAN_COL = 20;
 const int QUA_COL = 10;
 const int COST_COL = 7;
-const int VAL_COL = 5;
+const int VAL_COL = 7;
 const int SCREEN_HEIGHT = 25;
 const int SCREEN_WIDTH = 80;
 const char SPACE = ' ';
@@ -107,6 +107,7 @@ int main()
 
     while(menuChoice != QUIT && menuChoice != INVENTORY
           && menuChoice != RESTOCK) {
+        clearScreen();
         menuChoice = getMenuChoice();
     }
 
@@ -228,6 +229,8 @@ void printInventory(Part parts[], int numOfElements)
   cout << QUA_HEADER << setw(QUA_COL);
   cout << COST_HEADER << setw(COST_COL);
   cout << TOTAL_VAL_HEADER << setw(VAL_COL);
+
+  cout << endl;
 
   for(int i = 0; i < numOfElements; i++) {
     cout << left << setw(ITEM_COL) << parts[i].name
