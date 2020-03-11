@@ -74,7 +74,7 @@ void welcome();
 int readFile(Part parts[], int maxParts);
 // returns the number of parts stored in the array
 // returns 0 if the file failed to open
-// When reading from the file, assume if there is a name, the
+// when reading, if there's a name, the rest of the data exists
 
 void selectionSort(Part parts[], int numOfElements);
 // sorts all the parts in the given array by name, alphabetically
@@ -86,7 +86,10 @@ char getMenuChoice();
 // asks user for 1 of 3 menu choices
 
 void printInventory(Part parts[], int numOfElements);
-// prints the full inventory
+// prints the full inventory with totals
+
+void printReorder(Part parts[], int numOfElements);
+// prints an report of parts to be ordered with totals
 
 void clearScreen();
 // clears the screen based on SCREEN_HEIGHT
@@ -115,6 +118,7 @@ int main()
     {
       case INVENTORY :
       {
+        clearScreen();
         printInventory(parts, numOfElements);
         menuChoice = getMenuChoice();
         break;
@@ -129,7 +133,7 @@ int main()
   }
 
   clearScreen();
-  
+
   if(numOfElements < 1) {
     cout << endl;
     cout << "Error with input file!" << endl;
@@ -257,6 +261,11 @@ void printInventory(Part parts[], int numOfElements)
   cout << TOTAL_VAL << DOLLAR << totalVal << endl << endl;
   cout << "Press enter to continue....";
   cin.get();
+}
+
+void printReorder(Part parts[], int numOfElements)
+{
+  
 }
 
 void clearScreen()
