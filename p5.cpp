@@ -88,6 +88,9 @@ char getMenuChoice();
 void printInventory(Part parts[], int numOfElements);
 // prints the full inventory
 
+void clearScreen();
+// clears the screen based on SCREEN_HEIGHT
+
 void goodbye();
 
 int main()
@@ -111,7 +114,6 @@ int main()
     {
       case INVENTORY :
       {
-        cout << "going to print out an inventory" << endl;
         printInventory(parts, numOfElements);
         menuChoice = getMenuChoice();
         break;
@@ -221,6 +223,12 @@ void printInventory(Part parts[], int numOfElements)
 
   cout << endl;
 
+  cout << ITEM_HEADER << setw(ITEM_COL);
+  cout << MAN_HEADER << setw(MAN_COL);
+  cout << QUA_HEADER << setw(QUA_COL);
+  cout << COST_HEADER << setw(COST_COL);
+  cout << TOTAL_VAL_HEADER << setw(VAL_COL);
+
   for(int i = 0; i < numOfElements; i++) {
     cout << left << setw(ITEM_COL) << parts[i].name
          << setw(MAN_COL) << parts[i].manufacturer;
@@ -244,6 +252,12 @@ void printInventory(Part parts[], int numOfElements)
   cout << TOTAL_VAL << DOLLAR << totalVal << endl << endl;
   cout << "Press enter to continue....";
   cin.get();
+}
+
+void clearScreen()
+{
+  for(int i = 0; i < SCREEN_HEIGHT; i++)
+    cout << endl;
 }
 
 void goodbye()
