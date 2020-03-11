@@ -40,26 +40,36 @@ const int COL = 13;
 const char QUIT = 'q';
 const char RESTOCK = 'r';
 const char INVENTORY = 'i';
+const int ITEM_COL = 15;
+const int MAN_COL = 20;
+const int QUA_COL = 10;
+const int COST_COL = 7;
+const int VAL_COL = 5;
+const int SCREEN_HEIGHT = 25;
+const char DOLLAR = '$';
 
 void welcome();
 
-int readFile(Part Parts[], int maxParts);
+int readFile(Part parts[], int maxParts);
 // returns the number of parts stored in the array
 // returns 0 if the file failed to open
 // When reading from the file, assume if there is a name, the
 
-void printParts(const Part Parts[], int numOfElements);
+void printParts(const Part parts[], int numOfElements);
 // only here for debugging purposes!!!! remove when submitting
 // displays the array of Parts
 
-void selectionSort(Part Parts[], int numOfElements);
+void selectionSort(Part parts[], int numOfElements);
 // sorts all the parts in the given array by name, alphabetically
 
-void swap(Part Parts[], int index, int indexSwap);
+void swap(Part parts[], int index, int indexSwap);
 // swaps the two values of an array at the given indices
 
 char getMenuChoice();
 // asks user for 1 of 3 menu choices
+
+void printInventory(Part parts[], int numOfElements);
+// prints the full inventory
 
 void goodbye();
 
@@ -84,12 +94,9 @@ int main()
 
     while(menuChoice != QUIT && menuChoice != INVENTORY
           && menuChoice != RESTOCK) {
-
-
         menuChoice = getMenuChoice();
     }
 
-    cout << "menue choice is " << menuChoice << endl;
     switch(menuChoice)
     {
       case INVENTORY :
@@ -151,7 +158,7 @@ void printParts(const Part parts[], int numOfElements)
          << setw(COL) << parts[index].manufacturer
          << setw(COL) << parts[index].quantity
          << setw(COL) << parts[index].mininum
-         << "$" << setw(COL) << parts[index].unitPrice
+         << DOLLAR << setw(COL) << parts[index].unitPrice
          << endl;
   }
 }
@@ -188,6 +195,14 @@ char getMenuChoice()
   cout << "Please select a menu choice: ";
   cin >> choice;
   return choice;
+}
+
+void printInventory(Part parts[], int numOfElements)
+{
+  for(int i = 0; i < numOfElements; i++) {
+    cout << left << setw(ITEM_COL) << parts[i]
+         << setw(MAN_COL) << 
+  }
 }
 
 void goodbye()
