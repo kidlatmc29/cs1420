@@ -1,5 +1,5 @@
 // Isabel Ovalles
-// lab11.cpp
+// lab12.cpp
 
 #include <fstream>
 #include <iostream>
@@ -16,8 +16,8 @@ struct CoffeeDrinker
 
 const int MAX = 150;
 const int NAME_SPACE = 15;
-const int AGE_SPACE = 10;
-const int COFFEE_SPACE = 10;
+const int AGE_SPACE = 4;
+const char SPACE = ' ';
 const string FILENAME = "/home/fac/sreeder/class/cs1420/lab11input.dat";
 
 int readFile(CoffeeDrinker arr[]);
@@ -26,7 +26,7 @@ int readFile(CoffeeDrinker arr[]);
 void selectionSort(CoffeeDrinker arr[], int numOfElements);
 // sorts an array of CoffeeDrinkers in alphabetical order
 
-void swapCoffee(CoffeeDrinker arr[], int index, int indexSwap);
+void swapCoffee(CoffeeDrinker& p1, CoffeeDrinker& p2);
 // swaps CoffeeDrinkers form two given indexs
 
 int findOldest(CoffeeDrinker arr[], int numOfElements);
@@ -37,6 +37,12 @@ int findLeastCoffee(CoffeeDrinker arr[], int numOfElements);
 
 void printRecord(CoffeeDrinker record);
 // prints CoffeeDrinker with labels
+
+double avgAge(CoffeeDrinker arr[], int numOfElements);
+// returns the avg age of a person in the array
+
+int totalCups(CoffeeDrinker arr[], int numOfElements);
+// returns the total cups of coffees consumed by everyone in the array
 
 int main()
 {
@@ -59,9 +65,23 @@ int main()
   printRecord(arr[leastIndex]);
   cout << endl << endl;
 
+  cout << "Unsorted Records: " << endl;
+  for(int i = 0; i < numOfElements; i++)
+    printRecord(arr[i]);
+
+  cout << endl << endl;
+
+  cout << "Sorted Records: " << endl;
   selectionSort(arr, numOfElements);
   for(int i = 0; i < numOfElements; i++)
-  printRecord(arr[i]);
+    printRecord(arr[i]);
+
+  cout << endl << endl;
+
+  cout << "Average Age: " << avgAge(arr, numOfElements)
+       << endl << endl;
+
+  cout << "Total of coffee cups consumed: " << totalCups(arr, numOfElements);
 
   cout << endl << endl;
 
@@ -128,17 +148,35 @@ int findLeastCoffee(CoffeeDrinker arr[], int numOfElements)
   return leastCoffee;
 }
 
-void swapCoffee(CoffeeDrinker arr[], int index, int indexSwap)
+void swapCoffee(CoffeeDrinker& p1, CoffeeDinker& p2)
 {
-  CoffeeDrinker temp = arr[index];
-  arr[index] = arr[indexSwap];
-  arr[indexSwap] = temp;
+  CoffeeDrinker temp = p1;
+  p1 = p2;
+  p2 = temp;
 }
 
 void printRecord(CoffeeDrinker record)
 {
-  cout << "Name: " << record.name <<  setw(NAME_SPACE)
-       << "Age: "  << record.age  << setw(AGE_SPACE)
-       << setw(COFFEE_SPACE)  << "Coffee: " <<  record.coffee
+  cout << "Name: " << left <<  setw(NAME_SPACE) << record.name << SPACE
+       << "Age: "  << setw(AGE_SPACE) << record.age << SPACE
+       << "Coffee: " <<  record.coffee
        << endl;
+}
+
+double avgAge(CoffeeDrinker arr[], int numOfElements)
+{
+  double sum = 0;
+  for(int index = 0; index < numOfElements; index++) {
+    sum += arr[index].age;
+  }
+  return (sum/numOfElements);
+}
+
+int totalCups(CoffeeDrinker arr[], int numOfElements)
+{
+  int total;
+  for(int index  = 0; index < numOfElements; index++) {
+    total += arr[index].coffee;
+  }
+  return total;
 }

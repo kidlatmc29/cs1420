@@ -259,7 +259,6 @@ void printInventory(Part parts[], int numOfElements)
     if(i > 0 && i == SCREEN_HEIGHT) {
       cout << endl << "Press enter to continue the report....";
       cin.get();
-      cout << endl;
     }
   }
 
