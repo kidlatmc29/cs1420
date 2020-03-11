@@ -26,7 +26,7 @@ int readFile(CoffeeDrinker arr[]);
 void selectionSort(CoffeeDrinker arr[], int numOfElements);
 // sorts an array of CoffeeDrinkers in alphabetical order
 
-void swap(CoffeeDrinker arr[], int index, int indexSwap);
+void swapCoffee(CoffeeDrinker arr[], int index, int indexSwap);
 // swaps CoffeeDrinkers form two given indexs
 
 int findOldest(CoffeeDrinker arr[], int numOfElements);
@@ -99,7 +99,7 @@ void selectionSort(CoffeeDrinker arr[], int numOfElements)
         switchIndex = j;
       }
     }
-    swap(arr, index, switchIndex);
+    swapCoffee(arr, index, switchIndex);
   }
 }
 
@@ -127,7 +127,7 @@ int findLeastCoffee(CoffeeDrinker arr[], int numOfElements)
   return leastCoffee;
 }
 
-void swap(CoffeeDrinker arr[], int index, int indexSwap)
+void swapCoffee(CoffeeDrinker arr[], int index, int indexSwap)
 {
   CoffeeDrinker temp = arr[index];
   arr[index] = arr[indexSwap];

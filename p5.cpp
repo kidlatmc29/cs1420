@@ -47,6 +47,23 @@ const int COST_COL = 7;
 const int VAL_COL = 5;
 const int SCREEN_HEIGHT = 25;
 const char DOLLAR = '$';
+const string DSPACE = "    ";
+const string I_TITLE = "Inventory Report";
+const string R_TITLE = "Reorder Report";
+const string ITEM_HEADER = "Item";
+const string MAN_HEADER = "Manufacturer";
+const string QUA_HEADER "Quantity";
+const string COST_HEADER = "Cost each";
+const string TOTAL_VAL_HEADER = "Total Value";
+const string MIN_HEADER = "Mininum";
+const string ORDER_HEADER = "Order";
+const string ORDER_COST_HEADER = "Cost";
+const string NUM_DIFF_ITEMS = "Numbers of different items: ";
+const string TOTAL_QUA = "Total quantity: ";
+const string TOTAL_VAL = "Total value of all items: ";
+const string DIFF_ITEMS = "Number of different items to order: ";
+const string TOTAL_NUM_REORDER = "Total number to reorder: "
+const string TOTAL_REORDER_COST = "Total cost:"
 
 void welcome();
 
@@ -166,7 +183,7 @@ void printParts(const Part parts[], int numOfElements)
 void selectionSort(Part parts[], int numOfElements)
 {
   for(int index = 0; index < numOfElements - 1; index++) {
-    int i = index;
+      int i = index;
     for(int j = index + 1; j < numOfElements; j++) {
       if(parts[index].name > parts[j].name) {
         i = j;
@@ -199,10 +216,28 @@ char getMenuChoice()
 
 void printInventory(Part parts[], int numOfElements)
 {
+  int totalQuant = 0;
+  double totalVal = 0;
+
   for(int i = 0; i < numOfElements; i++) {
-    cout << left << setw(ITEM_COL) << parts[i]
-         << setw(MAN_COL) << 
+    cout << left << setw(ITEM_COL) << parts[i].name
+         << setw(MAN_COL) << parts[i].manufacturer;
+    cout << right << setw(QUA_COL) << parts[i].quantity
+         << DSPACE << DOLLAR << setw(COST_COL) << parts[i].cost;
+         << DSPACE << DOLLAR << setw(VAL_COL) <<
+         << parts[i].cost * parts[i].quantity << endl;
+    totalQuant += parts[i].quantity;
+    totalVal += parts[i].quantity * parts[i].cost;
+
+    if(i > 0 && i % SCREEN_HEIGHT == 0) {
+      cout << endl << "Press enter to continue the report....";
+      cin.get();
+      cout << endl;
+    }
   }
+
+  cout << endl << endl;
+  cout << ""
 }
 
 void goodbye()

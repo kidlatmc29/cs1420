@@ -63,13 +63,16 @@ void printList(const int arr[], int numOfElements)
 }
 
 void selectionSort(int arr[], int numOfElements)
-//FIX THIS SELECTION SORT TO BE CORRECT
+// SELECTION SORT NON-DESENDING ORDER FIX THIS
 {
-  for(int index = 0; index < numOfElements - 1; index++) {
-    for(int j = index + 1; j < numOfElements; j++) {
-      if(index + 1 < numOfElements && arr[index] > arr[j]) {
-        swapInt(arr, index, j);
+  int smallerInt;
+  for (int index = 0; index < numOfElements; index++) {
+    smallerInt = 0;
+    for(int j = index + 1; j < index; j++) {
+      if(arr[j] < arr[smallerInt]) {
+        smallerInt = j;
       }
+      swapInt(arr, index, smallerInt);
     }
   }
 }
