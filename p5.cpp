@@ -128,6 +128,8 @@ int main()
     }
   }
 
+  clearScreen();
+  
   if(numOfElements < 1) {
     cout << endl;
     cout << "Error with input file!" << endl;
@@ -238,6 +240,7 @@ void printInventory(Part parts[], int numOfElements)
          << DSPACE << DOLLAR << setw(COST_COL) << parts[i].unitPrice;
     cout << DSPACE << DOLLAR << setw(VAL_COL)
          << parts[i].unitPrice * parts[i].quantity << endl;
+
     totalQuant += parts[i].quantity;
     totalVal += parts[i].quantity * parts[i].unitPrice;
 
@@ -264,7 +267,6 @@ void clearScreen()
 
 void goodbye()
 {
-  clearScreen();
   cout << "Exiting program. Thank you! Goodbye....";
   cout << endl << endl << endl;
 }
