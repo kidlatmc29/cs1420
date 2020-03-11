@@ -46,9 +46,13 @@ const int QUA_COL = 10;
 const int COST_COL = 7;
 const int VAL_COL = 5;
 const int SCREEN_HEIGHT = 25;
+const int SCREEN_WITH = 80;
+const char SPACE = ' ';
 const char DOLLAR = '$';
 const string DSPACE = "   ";
 const string I_TITLE = "Inventory Report";
+const int I_NUM_CHARS = 16;
+const int R_NUM_CHARS = 14;
 const string R_TITLE = "Reorder Report";
 const string ITEM_HEADER = "Item";
 const string MAN_HEADER = "Manufacturer";
@@ -202,6 +206,18 @@ void printInventory(Part parts[], int numOfElements)
 {
   int totalQuant = 0;
   double totalVal = 0;
+
+  for(int spaces = 0; spaces < SCREEN_WIDTH - I_NUM_CHARS; spaces++) {
+    cout << SPACE;
+  }
+
+  cout << I_TITLE;
+
+  for(int spaces = 0; spaces < SCREEN_WIDTH; spaces ++) {
+    cout << SPACE;
+  }
+
+  cout << endl;
 
   for(int i = 0; i < numOfElements; i++) {
     cout << left << setw(ITEM_COL) << parts[i].name
