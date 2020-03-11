@@ -40,11 +40,11 @@ const int COL = 13;
 const char QUIT = 'q';
 const char RESTOCK = 'r';
 const char INVENTORY = 'i';
-const int ITEM_COL = 15;
+const int ITEM_COL = 20;
 const int MAN_COL = 20;
 const int QUA_COL = 10;
-const int COST_COL = 7;
-const int VAL_COL = 7;
+const int COST_COL = 10;
+const int VAL_COL = 10;
 const int SCREEN_HEIGHT = 25;
 const int SCREEN_WIDTH = 80;
 const char SPACE = ' ';
@@ -201,7 +201,6 @@ char getMenuChoice()
   cout << endl;
   cout << "Please select a menu choice: ";
   cin >> choice;
-  cin.clear();
   return choice;
 }
 
@@ -224,9 +223,9 @@ void printInventory(Part parts[], int numOfElements)
 
   cout << endl;
 
-  cout << ITEM_HEADER << setw(ITEM_COL);
+  cout << left << ITEM_HEADER << setw(ITEM_COL);
   cout << MAN_HEADER << setw(MAN_COL);
-  cout << QUA_HEADER << setw(QUA_COL);
+  cout << right << QUA_HEADER << setw(QUA_COL);
   cout << COST_HEADER << setw(COST_COL);
   cout << TOTAL_VAL_HEADER << setw(VAL_COL);
 
@@ -265,6 +264,7 @@ void clearScreen()
 
 void goodbye()
 {
+  clearScreen();
   cout << "Exiting program. Thank you! Goodbye....";
   cout << endl << endl << endl;
 }
