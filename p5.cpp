@@ -321,8 +321,19 @@ void printReorder(Part parts[], int numOfElements)
         totalReorder += parts[i].quantity;
         totalCost += parts[i].unitPrice;
 
+      if(i > 0 && i == SCREEN_HEIGHT) {
+        cout << endl << "Press enter to continue the report....";
+        cin.get();
       }
+    }
   }
+
+  cout << endl << endl;
+  cout << NUM_DIFF_ITEMS << totalDiff << endl;
+  cout << TOTAL_NUM_REORDER << totalReorder << endl;
+  cout << TOTAL_REORDER_COST << DOLLAR << totalCost << endl << endl;
+  cout << "Press enter to continue....";
+  cin.get();
 }
 
 void clearScreen()
