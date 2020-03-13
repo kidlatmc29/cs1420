@@ -6,7 +6,7 @@
 //
 // Input: The user gives the name of a file that contains data on electronic
 // items. From the file given, its contents is stored into an array of parts.
-// The user chooses from a menu 0 - 2 on what they'd like the program to do.
+// The user chooses from a menu i, r, or q on what they'd like to do.
 //
 // Processing: When given the file name, the program creates a new Part struct
 // and stores all of them into an array of Parts.
@@ -45,13 +45,17 @@ const int MAN_COL = 20;
 const int QUA_COL = 10;
 const int COST_COL = 10;
 const int VAL_COL = 10;
+const int MIN_COL = 10;
+const int ORDER_COL = 5;
 const int SCREEN_HEIGHT = 25;
 const int SCREEN_WIDTH = 80;
 const char SPACE = ' ';
 const int PRECISION = 2;
 const char DOLLAR = '$';
 const string DSPACE = "   ";
+const string W_TITLE = "-Welcome to Everything Electronic!'s Inventory System-"
 const string I_TITLE = "Inventory Report";
+const int W_NUM_CHAR = 54;
 const int I_NUM_CHARS = 16;
 const int R_NUM_CHARS = 14;
 const string R_TITLE = "Reorder Report";
@@ -101,7 +105,7 @@ int main()
 {
   Part parts[MAX_PARTS];
   int numOfElements; // total num of parts in Parts[]
-  char menuChoice;
+  char menuChoice  = 'n';
 
   clearScreen();
   welcome();
@@ -136,11 +140,6 @@ int main()
 
   clearScreen();
 
-  if(numOfElements < 1) {
-    cout << endl;
-    cout << "Error with input file!" << endl;
-  }
-
   goodbye();
   return 0;
 }
@@ -148,7 +147,14 @@ int main()
 void welcome()
 {
   cout << endl << endl;
-  cout << " - Welcome to Everything Electronic!'s Inventory System - ";
+  for(int i = 0; i < (SCREEN_WIDTH - W_NUM_CHAR) / 2; i++) {
+    cout << SPACE;
+  }
+  cout << WEL_TITLE;
+
+  for(int j = (SCREEN_WIDTH - W_NUM_CHAR) / 2; j < SCREEN_WIDTH; j++) {
+    cout << SPACE;
+  }
   cout << endl;
 }
 
@@ -210,7 +216,6 @@ char getMenuChoice()
   cout << endl;
   cout << "Please select a menu choice: ";
   cin >> choice;
-  cin.clear();
   return choice;
 }
 
@@ -272,11 +277,52 @@ void printInventory(Part parts[], int numOfElements)
 
 void printReorder(Part parts[], int numOfElements)
 {
+  int totalDiff = 0;
+  int totalReorder = 0;
+  double totalCost = 0;
+
   cout.setf(ios::fixed);
   cout.setf(ios::showpoint);
   cout.precision(PRECISION);
 
+  int titleSpaces = (SCREEN_WIDTH - R_NUM_CHARS) / 2;
 
+  for(int spaces = 0; spaces < titleSpaces; spaces++) {
+    cout << SPACE;
+  }
+
+  cout << R_TITLE;
+
+  for(int spaces = 0; spaces < SCREEN_WIDTH; spaces ++) {
+    cout << SPACE;
+  }
+
+  cout << endl;
+
+  cout << left << setw(ITEM_COL) << ITEM_HEADER
+       << setw(MAN_COL) << MAN_HEADER
+       << setw(QUA_COL) << QUA_HEADER
+       << setw(MIN_COL) << MIN_HEADER
+       << setw(ORDER_COL) << ORDER_HEADER
+       << setw(COST_COL) << COST_HEADER;
+
+  cout << endl << endl;
+
+  for(int i = 0; i < numOfElements; i++) {
+      if(parts[i].quantity < parts[i].mininum) {
+        cout << left << setw(ITEM_COL) << parts[i].name
+             << setw(MAN_COL) << parts[i].manufacturer
+        cout << right << setw(QUA_COL) << parts[i].quantity
+             << setw(MIN_COL) << parts[i].mininum
+             << setw(ORDER_COL) << (parts[i].mininum - part[i].quantity)
+             << DSPACE << DOLLAR << setw(COST_COL)
+             << parts[i].unitPrice;
+        totalDiff++;
+        totalReorder += parts[i].quantity;
+        totalCost += parts[i].unitPrice;
+
+      }
+  }
 }
 
 void clearScreen()

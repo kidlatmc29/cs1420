@@ -120,7 +120,7 @@ void selectionSort(CoffeeDrinker arr[], int numOfElements)
         indexSwap = j;
       }
     }
-    swapCoffee(arr, index, indexSwap);
+    swapCoffee(arr[index], arr[indexSwap]);
   }
 }
 
@@ -148,7 +148,7 @@ int findLeastCoffee(CoffeeDrinker arr[], int numOfElements)
   return leastCoffee;
 }
 
-void swapCoffee(CoffeeDrinker& p1, CoffeeDinker& p2)
+void swapCoffee(CoffeeDrinker& p1, CoffeeDrinker& p2)
 {
   CoffeeDrinker temp = p1;
   p1 = p2;
