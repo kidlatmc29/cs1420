@@ -53,7 +53,7 @@ const char SPACE = ' ';
 const int PRECISION = 2;
 const char DOLLAR = '$';
 const string DSPACE = "   ";
-const string W_TITLE = "-Welcome to Everything Electronic!'s Inventory System-"
+const string W_TITLE = "-Welcome to Everything Electronic's Inventory System-";
 const string I_TITLE = "Inventory Report";
 const int W_NUM_CHAR = 54;
 const int I_NUM_CHARS = 16;
@@ -131,7 +131,8 @@ int main()
       }
       case RESTOCK :
       {
-        cout << "going to print out a restock report" << endl;
+        clearScreen();
+        printReorder(parts, numOfElements);
         menuChoice =  getMenuChoice();
         break;
       }
@@ -150,7 +151,7 @@ void welcome()
   for(int i = 0; i < (SCREEN_WIDTH - W_NUM_CHAR) / 2; i++) {
     cout << SPACE;
   }
-  cout << WEL_TITLE;
+  cout << W_TITLE;
 
   for(int j = (SCREEN_WIDTH - W_NUM_CHAR) / 2; j < SCREEN_WIDTH; j++) {
     cout << SPACE;
@@ -311,18 +312,20 @@ void printReorder(Part parts[], int numOfElements)
   for(int i = 0; i < numOfElements; i++) {
       if(parts[i].quantity < parts[i].mininum) {
         cout << left << setw(ITEM_COL) << parts[i].name
-             << setw(MAN_COL) << parts[i].manufacturer
+             << setw(MAN_COL) << parts[i].manufacturer;
         cout << right << setw(QUA_COL) << parts[i].quantity
              << setw(MIN_COL) << parts[i].mininum
-             << setw(ORDER_COL) << (parts[i].mininum - part[i].quantity)
+             << setw(ORDER_COL) << (parts[i].mininum - parts[i].quantity)
              << DSPACE << DOLLAR << setw(COST_COL)
              << parts[i].unitPrice;
+        cout << endl;
         totalDiff++;
         totalReorder += parts[i].quantity;
         totalCost += parts[i].unitPrice;
 
       if(i > 0 && i == SCREEN_HEIGHT) {
         cout << endl << "Press enter to continue the report....";
+        cin.ignore();
         cin.get();
       }
     }
