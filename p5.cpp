@@ -41,7 +41,7 @@ const char RESTOCK = 'r';
 const char INVENTORY = 'i';
 const int ITEM_COL = 20;
 const int MAN_COL = 20;
-const int QUA_COL = 5;
+const int QUA_COL = 16;
 const int COST_COL = 7;
 const int VAL_COL = 7;
 const int MIN_COL = 7;
@@ -252,9 +252,10 @@ void printInventory(Part parts[], int numOfElements)
 
   for(int i = 0; i < numOfElements; i++) {
     cout << left << setw(ITEM_COL) << parts[i].name
-         << setw(MAN_COL) << parts[i].manufacturer;
-    cout << right << setw(QUA_COL) << parts[i].quantity
-         << DSPACE << DOLLAR << setw(COST_COL) << parts[i].unitPrice;
+         << setw(MAN_COL) << parts[i].manufacturer
+         << setw(QUA_COL) << parts[i].quantity;
+        cout << right << DSPACE << DOLLAR
+             << setw(COST_COL) << parts[i].unitPrice;
     cout << DSPACE << DOLLAR << setw(VAL_COL)
          << parts[i].unitPrice * parts[i].quantity << endl;
 
@@ -264,6 +265,7 @@ void printInventory(Part parts[], int numOfElements)
     if(i > 0 && i == SCREEN_HEIGHT) {
       cout << endl << "Press enter to continue the report....";
       cin.get();
+      cout << endl;
     }
   }
 
@@ -324,10 +326,10 @@ void printReorder(Part parts[], int numOfElements)
 
       if(i > 0 && i == SCREEN_HEIGHT) {
         cout << endl << "Press enter to continue the report....";
-        cin.ignore();
         cin.get();
       }
     }
+    cout << endl;
   }
 
   cout << endl << endl;
