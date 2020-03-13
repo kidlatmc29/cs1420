@@ -320,8 +320,8 @@ void printReorder(Part parts[], int numOfElements)
              << parts[i].unitPrice;
         cout << endl;
         totalDiff++;
-        totalReorder += parts[i].quantity;
-        totalCost += parts[i].unitPrice;
+        totalReorder += (parts[i].mininum - parts[i].quantity);
+        totalCost += parts[i].unitPrice * parts[i].quantity;
 
       if(i > 0 && i == SCREEN_HEIGHT) {
         cout << endl << "Press enter to continue the report....";
