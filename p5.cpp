@@ -19,6 +19,8 @@
 //
 // Example: The user enter the file name 'p5data.dat'. A menu appears and
 // the user enters '1' which is to print out an entire inventory report.
+// Program waits at the end of the report for them to press enter, then
+// menu is displayed again.
 
 #include<iostream>
 #include <fstream>
@@ -41,12 +43,12 @@ const char RESTOCK = 'r';
 const char INVENTORY = 'i';
 const int ITEM_COL = 20;
 const int MAN_COL = 20;
-const int QUA_COL = 6;
+const int QUA_COL = 7;
 const int COST_COL = 14;
 const int VAL_COL = 16;
-const int MIN_COL = 7;
-const int ORDER_COL = 7;
-const int SCREEN_HEIGHT = 25;
+const int MIN_COL = 9;
+const int ORDER_COL = 5;
+const int SCREEN_HEIGHT = 20;
 const int SCREEN_WIDTH = 80;
 const char DOLLAR = '$';
 const char SPACE = ' ';
@@ -109,6 +111,11 @@ int main()
   welcome();
   numOfElements = readFile(parts, MAX_PARTS);
 
+  if(numOfElements < 1) {
+    cout << "File reading failed! Terminating programing....";
+    return 0;
+  }
+
   while(menuChoice != QUIT && numOfElements > 0) {
     selectionSort(parts, numOfElements);
 
@@ -124,6 +131,7 @@ int main()
       {
         clearScreen();
         printInventory(parts, numOfElements);
+        clearScreen();
         menuChoice = getMenuChoice();
         break;
       }
@@ -131,6 +139,7 @@ int main()
       {
         clearScreen();
         printReorder(parts, numOfElements);
+        clearScreen();
         menuChoice =  getMenuChoice();
         break;
       }
@@ -207,7 +216,6 @@ void swapParts(Part parts[], int index, int indexSwap)
 char getMenuChoice()
 {
   char choice;
-  cout << endl;
   cout << "MAIN MENU:" << endl;
   cout << "  " << INVENTORY << " - [Inventory Report]" << endl;
   cout << "  " << RESTOCK << " - [Restock Report]" << endl;
@@ -260,18 +268,13 @@ void printInventory(Part parts[], int numOfElements)
 
     totalQuant += parts[i].quantity;
     totalVal += parts[i].quantity * parts[i].unitPrice;
-
-    if(i > 0 && i == SCREEN_HEIGHT) {
-      cout << endl << "Press enter to continue the report....";
-      cin.get();
-      cout << endl;
-    }
   }
 
   cout << endl << endl;
   cout << NUM_DIFF_ITEMS << numOfElements << endl;
   cout << TOTAL_QUA << totalQuant << endl;
   cout << TOTAL_VAL << DOLLAR << totalVal << endl << endl;
+  cin.ignore();
   cout << "Press enter to continue....";
   cin.get();
 }
@@ -320,21 +323,19 @@ void printReorder(Part parts[], int numOfElements)
              << parts[i].unitPrice << endl;
         totalDiff++;
         totalReorder += (parts[i].mininum - parts[i].quantity);
-        totalCost += parts[i].unitPrice * parts[i].quantity;
-
-      if(i > 0 && i == SCREEN_HEIGHT) {
-        cout << endl << "Press enter to continue the report....";
-        cin.get();
-      }
+        totalCost += parts[i].unitPrice *
+                  (parts[i].mininum - parts[i].quantity);
     }
   }
 
   cout << endl << endl;
   cout << NUM_DIFF_ITEMS << totalDiff << endl;
   cout << TOTAL_NUM_REORDER << totalReorder << endl;
-  cout << TOTAL_REORDER_COST << DOLLAR << totalCost << endl << endl;
+  cout << TOTAL_REORDER_COST << SPACE << DOLLAR << totalCost << endl << endl;
+  cin.ignore();
   cout << "Press enter to continue....";
   cin.get();
+  cout << endl;
 }
 
 void clearScreen()
