@@ -319,7 +319,6 @@ void printReorder(Part parts[], int numOfElements)
              << setw(ORDER_COL) << (parts[i].mininum - parts[i].quantity)
              << DSPACE << DOLLAR << setw(COST_COL)
              << parts[i].unitPrice;
-        cout << endl;
         totalDiff++;
         totalReorder += (parts[i].mininum - parts[i].quantity);
         totalCost += parts[i].unitPrice * parts[i].quantity;
