@@ -316,7 +316,7 @@ void printReorder(Part parts[], int numOfElements)
         cout << right << setw(QUA_COL) << parts[i].quantity
              << setw(MIN_COL) << parts[i].mininum
              << setw(ORDER_COL) << (parts[i].mininum - parts[i].quantity)
-             << setw(COST_COL)
+             << setw(COST_COL / 2) << DOLLAR << setw(COST_COL / 2 -1)
              << parts[i].unitPrice << endl;
         totalDiff++;
         totalReorder += (parts[i].mininum - parts[i].quantity);
