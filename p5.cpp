@@ -41,17 +41,16 @@ const char RESTOCK = 'r';
 const char INVENTORY = 'i';
 const int ITEM_COL = 20;
 const int MAN_COL = 20;
-const int QUA_COL = 16;
-const int COST_COL = 7;
-const int VAL_COL = 7;
+const int QUA_COL = 6;
+const int COST_COL = 14;
+const int VAL_COL = 16;
 const int MIN_COL = 7;
-const int ORDER_COL = 5;
+const int ORDER_COL = 7;
 const int SCREEN_HEIGHT = 25;
 const int SCREEN_WIDTH = 80;
+const char DOLLAR = '$';
 const char SPACE = ' ';
 const int PRECISION = 2;
-const char DOLLAR = '$';
-const string DSPACE = "   ";
 const string W_TITLE = "-Welcome to Everything Electronic's Inventory System-";
 const string I_TITLE = "Inventory Report";
 const int W_NUM_CHAR = 54;
@@ -244,19 +243,19 @@ void printInventory(Part parts[], int numOfElements)
 
   cout << left << setw(ITEM_COL) << ITEM_HEADER;
   cout << setw(MAN_COL) << MAN_HEADER;
-  cout << setw(QUA_COL) << QUA_HEADER;
-  cout << setw(COST_COL) << COST_HEADER;
-  cout << setw(VAL_COL) << TOTAL_VAL_HEADER;
+  cout << right << setw(QUA_COL) << QUA_HEADER;
+  cout << right << setw(COST_COL) << COST_HEADER;
+  cout << right << setw(VAL_COL) << TOTAL_VAL_HEADER;
 
   cout << endl << endl;
 
   for(int i = 0; i < numOfElements; i++) {
     cout << left << setw(ITEM_COL) << parts[i].name
-         << setw(MAN_COL) << parts[i].manufacturer
-         << setw(QUA_COL) << parts[i].quantity;
-        cout << right << DSPACE << DOLLAR
-             << setw(COST_COL) << parts[i].unitPrice;
-    cout << DSPACE << DOLLAR << setw(VAL_COL)
+         << setw(MAN_COL) << parts[i].manufacturer;
+    cout << right << setw(QUA_COL) << parts[i].quantity;
+    cout << setw(COST_COL / 2) << DOLLAR
+         << setw(COST_COL / 2 - 1) << parts[i].unitPrice;
+    cout << setw(VAL_COL / 2) << DOLLAR << setw(VAL_COL / 2 - 1)
          << parts[i].unitPrice * parts[i].quantity << endl;
 
     totalQuant += parts[i].quantity;
@@ -302,8 +301,8 @@ void printReorder(Part parts[], int numOfElements)
   cout << endl;
 
   cout << left << setw(ITEM_COL) << ITEM_HEADER
-       << setw(MAN_COL) << MAN_HEADER
-       << setw(QUA_COL) << QUA_HEADER
+       << setw(MAN_COL) << MAN_HEADER;
+  cout << right << setw(QUA_COL) << QUA_HEADER
        << setw(MIN_COL) << MIN_HEADER
        << setw(ORDER_COL) << ORDER_HEADER
        << setw(COST_COL) << COST_HEADER;
@@ -317,8 +316,8 @@ void printReorder(Part parts[], int numOfElements)
         cout << right << setw(QUA_COL) << parts[i].quantity
              << setw(MIN_COL) << parts[i].mininum
              << setw(ORDER_COL) << (parts[i].mininum - parts[i].quantity)
-             << DSPACE << DOLLAR << setw(COST_COL)
-             << parts[i].unitPrice;
+             << setw(COST_COL)
+             << parts[i].unitPrice << endl;
         totalDiff++;
         totalReorder += (parts[i].mininum - parts[i].quantity);
         totalCost += parts[i].unitPrice * parts[i].quantity;
@@ -328,7 +327,6 @@ void printReorder(Part parts[], int numOfElements)
         cin.get();
       }
     }
-    cout << endl;
   }
 
   cout << endl << endl;
