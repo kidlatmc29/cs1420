@@ -45,7 +45,11 @@ int readFile(Book list[], int maxBooks);
 
 void printBook(Book list[], int index);
 
+void sortBooks(Book list[], int numOfBooks);
+
 int findShortest(Book list[], int numOfBooks);
+
+int findAuthor(Book)
 
 void goodbye();
 
