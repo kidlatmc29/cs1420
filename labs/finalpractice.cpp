@@ -9,9 +9,7 @@
 // - selection sort
 
 // Practice: Create a struct called Book, which holds the following values:
-// its title, the author, the length of the book, the year it was published,
-// and what genre it is. For genre, a char of 'm' is mystery, a char of 'r' is
-// romance, a char of 'p' is poetry and a char of 's' is science fiction.
+// its title, the author, the length of the book, the year it was published.
 
 // Create an array of type Book. Write funtions that can sort based on the given
 // values. Write one linear and one binary search that can find the shortest
@@ -35,7 +33,6 @@ struct Book {
   string title;
   string author;
   unsigned int totalPages;
-  char genre;
 };
 
 int main()
