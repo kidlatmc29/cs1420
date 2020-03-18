@@ -19,7 +19,7 @@
 // 1.) Read in a file of books and populate an array of type book
 // 2.) Search (linear) for the shortest book in page length
 // 3.) Sort the array based on author's name alphabetically
-// 4.) Search (binary) for the first book written by _______
+// 4.) Search (binary) for the first book written by Lowry
 // 5.) Sort based on year published, in nondescending order. Print out the arr.
 
 
@@ -41,7 +41,7 @@ const string DATA = "finalpracticeinput.dat";
 
 void welcome();
 
-int readFile(Book list[]);
+int readFile(Book list[], int maxBooks);
 
 void printBook(Book list[], int index);
 
@@ -52,11 +52,11 @@ int main()
   Book list[MAX];
   int numOfBooks = 0;
 
-  numOfBooks = readFile(list);
+  numOfBooks = readFile(list, MAX);
 
   if(numOfBooks < 1) {
     cout << "Problem with file. Press [ENTER] to quit the program...";
-    cout.get();
+    cin.get();
     goodbye();
     return 0;
   }
@@ -73,22 +73,23 @@ int main()
 void welcome()
 {
   cout << endl << endl;
-  cout << "Welcome to Isabel's library!" << endl << endl;
+  cout << "Welcome to Isabel's Bookshelf!" << endl << endl;
 }
 
-int readFile(Book list[], int numOfBooks)
+int readFile(Book list[], int maxBooks)
 {
   ifstream inFile;
   string fileName = DATA;
   int count = 0;
 
-  cout << "Reading data from " << fileName "....." << endl;
+  cout << "Reading data from " << fileName << "....." << endl << endl;
   inFile.open(fileName);
 
-  if(!inFile.file()) {
-    while(count < MAX && inFile >> list[count].title) {
+  if(!inFile.fail()) {
+    while(count < maxBooks && inFile >> list[count].title) {
       inFile >> list[count].author
-             >> list[count].totalPages;
+             >> list[count].totalPages
+             >> list[count].year;
       count++;
     }
   } else {
